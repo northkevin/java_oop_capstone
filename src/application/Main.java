@@ -148,6 +148,7 @@ public class Main extends Application {
     scene1Hbox = new HBox(board, sceneGrid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
     scenePane = new Pane(scene1Hbox, buttonController.bDoorDeck); //Made a pane so I can put the door deck button wherever I want
     primaryScene = new Scene(scenePane, 1400, 700);
+    primaryScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
     primaryStage.setScene(primaryScene);
     primaryStage.setTitle("Munchkin First Draw");
     primaryStage.show();
