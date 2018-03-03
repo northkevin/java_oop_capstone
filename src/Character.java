@@ -61,6 +61,14 @@ public class Character
 		runBonus = pRunBonus;
 	}
 	
+	// new add jinlonglin
+	public void setRace(String newRace)
+	{
+		race = newRace;
+	}
 	
+	public void setClass(String newClass) {
+		playerClass=newClass;
+	}
 	
 }
