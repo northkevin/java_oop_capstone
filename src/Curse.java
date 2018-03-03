@@ -11,7 +11,7 @@ public class Curse extends DoorDeck {
 		constructCard();
 	}
 
-		// 1-2:Hex of Grief--Loosing the same number of items as the number picked
+		// 1-2:Loosing the same number of items as the number picked
 		// 3:Losing race and become human
 		// 4-5:Losing race and draw a random new race card
 		// 6-7:Losing class

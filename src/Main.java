@@ -122,6 +122,7 @@ public class Main extends Application {
 	private Helpful helpful;
 	private MonsterHelper monsterHelper;
 	private Curse curse;
+	private CurseHelper curseHelper;
 	
 	//Attributes
 	private int doorDeckNum = 0; //Keeps track of how many cards are in the door deck
@@ -161,8 +162,9 @@ public class Main extends Application {
 		helpful = new Helpful();
 		monsterHelper = new MonsterHelper();
 		curse = new Curse();
-		
-		//startScene(primaryStage);
+		curseHelper = new CurseHelper();
+
+		startScene(primaryStage);
 		
 	}
 	
@@ -198,6 +200,7 @@ public class Main extends Application {
 		}
 		
 		//Setting up the layout
+		
 		setStyles();
 		
 		//Setting up the layout for Scene1
@@ -218,8 +221,10 @@ public class Main extends Application {
 		scene1Grid.add(bHalflingSell, 7, 3);
 		scene1Grid.add(bSellTreasure, 7, 5);
 		scene1Grid.add(separator, 1,10,8,1);
+		scene1Grid.add(actionLabel, 1, 15, 8, 1);
 		
-
+		//Have to do this line before making hboxes but after action label. Not part of layout.
+		curseHelper.checkCurse(actionLabel, curse, playerHand); //Checks if a curse card was drawn, applies it, then removes it from the deck
 		
 		//Adds cards to the scene according to how many the player has
 		if(playerHand.size() == 0)
@@ -250,18 +255,21 @@ public class Main extends Application {
 		{
 			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
 		}
+		else if (playerHand.size() == 7)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7); //Puts all the cards in one hbox
+		}
 		else //When the game starts the player starts with 8 cards
 		{
-			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7, card8); //Puts all the cards in one hbox
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7, card8);
 		}
 		
 		scene1Grid.add(cardsHbox, 1, 12, 8, 1);
-		scene1Grid.add(actionLabel, 1, 15, 8, 1);
 		scene1Hbox = new HBox(board, scene1Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
 		scene1Pane = new Pane(scene1Hbox, bDoorDeck); //Made a pane so I can put the door deck button wherever I want
 		
 		//Sets the size of the scene according to how many cards the player has
-		if(playerHand.size() < 6)
+		if(playerHand.size() <= 6)
 		{
 			scene1Draw1 = new Scene(scene1Pane, 1400, 700);
 		}
@@ -282,6 +290,8 @@ public class Main extends Application {
 		bHelpfulLevel.setDisable(true);
 		bHelpfulSell.setDisable(true);
 					
+	
+		
 		//Enables the halfing race ability if the player is a halfling
 		if(character.getRace() == "Halfling")
 		{
@@ -732,6 +742,11 @@ public class Main extends Application {
 			scene3Grid.add(bHalflingSell, 7, 3);
 			scene3Grid.add(bSellTreasure, 7, 5);
 			scene3Grid.add(separator, 1,10,8,1);
+			scene3Grid.add(actionLabel, 1, 15, 8, 1);
+			
+			//Have to do this line before making hboxes but after action label. Not part of layout.
+			curseHelper.checkCurse(actionLabel, curse, playerHand); //Checks if a curse card was drawn, applies it, then removes it from the deck
+			
 
 			//Puts however many cards the character has in the hbox
 			if(playerHand.size() == 0)
@@ -764,7 +779,6 @@ public class Main extends Application {
 			}
 			
 			scene3Grid.add(cardsHbox, 1, 12, 8, 1);
-			scene3Grid.add(actionLabel, 1, 15, 8, 1);
 			scene3Hbox = new HBox(board, scene3Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
 			scene3Pane = new Pane(scene3Hbox, bDoorDeck); //Made a pane so I can put the door deck button wherever I want
 			scene3Draw2 = new Scene(scene3Pane, 1400, 700);
@@ -1594,9 +1608,10 @@ public class Main extends Application {
 		fakeLabel5.setMinSize(85, 85);
 		//End of spacing labels
 		
-		actionLabel = new Label("	Please click on the door deck to draw and continue your adventure!");
+		actionLabel = new Label("	Please click on the door deck to draw in red on the left and continue your adventure!");
 		actionLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
 		actionLabel.setMinSize(1012, 40);
+		actionLabel.setMaxSize(1012, 60);
 		
 		characterInfo = new Label("Player Level: " + character.getLevel()  + "\nPlayer Race: " + character.getRace() + "\nPlayer Class: " + character.getplayerClass() + "\nPlayer Gold: " + character.getGold());
 		
@@ -1606,7 +1621,7 @@ public class Main extends Application {
 		
 		abilityLabel = new Label("	Class abilities are below. Abilities that aren't used\n	by your current class will be grayed out.");
 		abilityLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
-		abilityLabel.setMinSize(450, 40);
+		abilityLabel.setMinSize(450, 80);
 		
 		characterMonsterInfo = new Label("Player Level: " + character.getLevel()  + "\nPlayer Race: " + character.getRace() + "\nPlayer Class: " + character.getplayerClass() + "\nPlayer Gold: " + character.getGold() + "\nFight Bonus: " + character.getFightBonus() + "\nRun Bonus:" + character.getRunBonus());
 				

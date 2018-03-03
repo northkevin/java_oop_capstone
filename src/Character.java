@@ -16,6 +16,7 @@ public class Character
 		playerClass = "Cleric";
 	}
 	
+	//getters
 	public String getRace()
 	{
 		return race;
@@ -51,6 +52,7 @@ public class Character
 		return runBonus;
 	}
 	
+	//setters
 	public void setFightBonus(int pFightBonus)
 	{
 		fightBonus = pFightBonus;
@@ -61,14 +63,28 @@ public class Character
 		runBonus = pRunBonus;
 	}
 	
-	// new add jinlonglin
-	public void setRace(String newRace)
+	public void setLevel(int pLevel)
 	{
-		race = newRace;
+		level = pLevel;
 	}
 	
-	public void setClass(String newClass) {
-		playerClass=newClass;
+	public void setRace(String pRace)
+	{
+		race = pRace;
 	}
 	
+	public void setPlayerClass(String pPlayerClass)
+	{
+		playerClass = pPlayerClass;
+	}
+	
+	public void setGold(int pGold)
+	{
+		gold = pGold;
+	}
+	
+	public void setIsDead(boolean pIsDead)
+	{
+		isDead = pIsDead;
+	}
 }
