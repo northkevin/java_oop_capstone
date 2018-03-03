@@ -1,6 +1,5 @@
 
 	
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -56,6 +55,7 @@ public class Main extends Application {
 	private Button bCharm; //Wizard class ability
 	private Button bMonsterEncounter; //For the monster card in monster encounter
 	private Button bDiscard;
+	private Button bGoBack;
 	
 	//Toggle Buttons (Cards)
 	private ToggleButton card1;
@@ -100,12 +100,15 @@ public class Main extends Application {
 	private GridPane scene5Grid;
 	
 	//Making Hboxes
-	private HBox scene1Hbox, cardsHbox, scene3Hbox, scene2Hbox, scene4Hbox;
+	private HBox scene1Hbox, cardsHbox, scene3Hbox, scene2Hbox, scene4Hbox, scene5Hbox;
 	
 	//Making a Pane
 	private Pane scene1Pane;
 	private Pane scene3Pane;
 	private Pane scene2Pane;
+	
+	//Making another stage
+	private Stage secondaryStage = new Stage();
 	
 	
 	//Instantiating all the class objects
@@ -123,7 +126,14 @@ public class Main extends Application {
 	private int doorDeckNum = 0; //Keeps track of how many cards are in the door deck
 	private ArrayList doorCards, playerHand;
 	private int cardChoice = -1; //Associates the card number with the the toggle button clicked. -1 is not an index of an arraylist
-	boolean Drawn = false; //Keeps track of if the player has drawn yet or not. Exit loop condition for scene 1 and 3.
+	private boolean Drawn = false; //Keeps track of if the player has drawn yet or not. Exit loop condition for scene 1 and 3.
+	private int cardsSelected = 0; //Keeps track of how many cards are selected in Scene 4
+	private boolean card1Selected = false; //Keeps track of if card 1 is selected in Scenes 4 and 5
+	private boolean card2Selected = false; //Keeps track of if card 2 is selected in Scenes 4 and 5
+	private boolean card3Selected = false; //Keeps track of if card 3 is selected in Scenes 4 and 5
+	private boolean card4Selected = false; //Keeps track of if card 4 is selected in Scenes 4 and 5
+	private boolean card5Selected = false; //Keeps track of if card 5 is selected in Scenes 4 and 5
+	private int maxCards = 5; //Keeps track of how many cards the player can have. 5 normally, 6 for dwarves
 	
 	@Override
 	public void start(Stage primaryStage) 
@@ -144,19 +154,19 @@ public class Main extends Application {
 		helpful = new Helpful();
 		monsterHelper = new MonsterHelper();
 		
-		startScene(primaryStage);
-		//****Ignore this. In the middle of Scene 4 implementation testing. abilityScene(primaryStage);*****
+		//discardScene(primaryStage);
+		startScene(primaryStage, secondaryStage);
+		//abilityScene(primaryStage);
 		
 	}
 	
-	public void startScene(Stage pPrimaryStage)
+	public void startScene(Stage pPrimaryStage, Stage pSecondaryStage)
 	{
 	
 		//Setting up the layout
 		setStyles();
 		
 		//Setting up the layout for Scene1
-		//scene1Pane.getChildren().addAll(board, bDoorDeck);
 		bDoorDeck.setTranslateX(19);
 		bDoorDeck.setTranslateY(497);
 		scene1Grid = new GridPane();
@@ -284,13 +294,20 @@ public class Main extends Application {
 		bDoorDeck.setOnAction(e->
 		{
 			playerHandHelper.drawDoor(doorCards, playerHand);
-			switchScene(pPrimaryStage);
+			//if(playerHand.size() > maxCards)
+			//{	
+				//abilityScene(pPrimaryStage);
+			//}	
+			//else
+			//{	
+				switchScene(pPrimaryStage, pSecondaryStage);
+			//}
 		});
 	
 	}
 
 	//Sets the stage to either a monster encounter or to their second draw depending on if a monster was drawn in scene 1 or not
-	public void switchScene(Stage pPrimaryStage)
+	public void switchScene(Stage pPrimaryStage, Stage pSecondaryStage)
 	{
 		//Goes to scene 2 if the last card drawn is a monster. -1 because we arraylists start at 0
 		if(playerHand.get(playerHand.size()-1) instanceof Monster)
@@ -408,14 +425,21 @@ public class Main extends Application {
 			//Button actions for Scene 1
 			bRules.setOnAction(e-> Rules());
 			bTreasureBonus.setOnAction(e-> playerHandHelper.useTreasure(character, playerHand, cardChoice));
-			bTurning.setOnAction(e-> cleric.turning(character, playerHand));
+			bTurning.setOnAction(e-> 
+			{
+				cleric.turning(character, playerHand);
+				bTurning.setDisable(true); //Sets the ability to disabled after the character has used it
+				abilityScene(pSecondaryStage);
+			});
+			
 			bBerserking.setOnAction(e-> warrior.berserking(character, playerHand));
 			bFlight.setOnAction(e-> wizard.flight(character, playerHand));
 			bCharm.setOnAction(e-> wizard.charm(character, playerHand));
 			bMonsterEncounter.setOnAction(e-> 
 			{
+				
 				characterHelper.combat(character, playerHand, monsterHelper);
-				startScene(pPrimaryStage);
+				startScene(pPrimaryStage, pSecondaryStage);
 			});
 					
 			pPrimaryStage.setScene(scene2Monster);
@@ -556,12 +580,12 @@ public class Main extends Application {
 			bDoorDeck.setOnAction(e->
 			{
 				playerHandHelper.drawDoor(doorCards, playerHand);
-				startScene(pPrimaryStage);
+				startScene(pPrimaryStage, pSecondaryStage);
 			});
 		}
 	}
 	
-	public void abilityScene(Stage pPrimaryStage) 
+	public void abilityScene(Stage pSecondaryStage) 
 	{
 		setStyles();
 		
@@ -581,19 +605,134 @@ public class Main extends Application {
 		scene4Grid.add(instructionLabel, 1, 0, 7, 1);
 		scene4Grid.add(bRules, 8, 0);
 		cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
-		scene4Grid.add(cardsHbox, 1, 12, 8, 1);
-		scene4Grid.add(bDiscard, 1, 30);
+		scene4Grid.add(cardsHbox, 1, 7, 8, 1);
+		actionLabel.setMinHeight(70); //Readjusting the height of the action label
+		scene4Grid.add(actionLabel, 1, 17, 9, 1);
+		scene4Grid.add(bDiscard, 1, 22);
+		fakeLabel.setMinWidth(550);
+		scene4Grid.add(fakeLabel, 6, 22);
 		scene4Hbox = new HBox(board, scene4Grid); //Puts the board and the rest of the buttons in an hbox
 		scene4DiscardAbility = new Scene(scene4Hbox, 1400, 700);
-		pPrimaryStage.setScene(scene4DiscardAbility);
-		pPrimaryStage.setTitle("Munchkin Discard for Class Ability");
-		pPrimaryStage.show();
+		pSecondaryStage.setScene(scene4DiscardAbility);
+		pSecondaryStage.setTitle("Munchkin Discard for Class Ability");
+		pSecondaryStage.show();
 		
+		//Togglebutton actions for Scene 4
+		card1.setOnAction(e-> 
+		{
+			if(card1.isSelected())
+			{
+				card1Selected = true; //Card 1 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card1Selected = false; //Card 1 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card2.setOnAction(e-> 
+		{
+			if(card2.isSelected())
+			{
+				card2Selected = true; //Card 1 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card2Selected = false; //Card 2 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card3.setOnAction(e-> 
+		{
+			if(card3.isSelected())
+			{
+				card3Selected = true; //Card 3 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card3Selected = false; //Card 3 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card4.setOnAction(e-> 
+		{
+			if(card4.isSelected())
+			{
+				card4Selected = true; //Card 4 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card4Selected = false; //Card 4 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card5.setOnAction(e-> 
+		{
+			if(card5.isSelected())
+			{
+				card5Selected = true; //Card 5 is selected
+				cardsSelected++;
+			}
+			else 
+			{
+				card5Selected = false; //Card 5 is not selected
+				cardsSelected--;
+			}
+		});
+		
+		//Button actions for scene 4
+		bRules.setOnAction(e-> Rules());
+		
+		//Will discard if the player has toggles 3 cards or less
+		if(cardsSelected<= 3)
+		{
+			bDiscard.setOnAction(e-> playerHandHelper.discard(pSecondaryStage, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected));
+		}
+		else
+		{
+			instructionLabel.setText("	You cannot choose more than 3 cards! Please choose up to three cards below to use your class ability!");
+		}
+		
+		pSecondaryStage.setOnCloseRequest(e->e.consume()); //Makes it so the user can't exit out of the second stage 
 	}
 	
-	public void discardScene(Stage pPrimaryStage)
+	public void discardScene(Stage pSecondaryStage)
 	{
+		setStyles();
+		//Removing all the cards from a toggle group so they can select more than one
+		card1.setToggleGroup(null);
+		card2.setToggleGroup(null);
+		card3.setToggleGroup(null);
+		card4.setToggleGroup(null);
+		card5.setToggleGroup(null);
 		
+		instructionLabel.setText("	You have obtained too many cards! Please choose some to discard below!");
+		
+		//Setting up the layout for scene 4
+		scene5Grid = new GridPane();
+		scene5Grid.setHgap(10);
+		scene5Grid.setVgap(10);
+		scene5Grid.add(instructionLabel, 1, 0, 7, 1);
+		scene5Grid.add(bRules, 8, 0);
+		cardsHbox = new HBox(10, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+		scene5Grid.add(characterInfo, 1, 7);
+		scene5Grid.add(cardsHbox, 1, 9, 8, 1);
+		scene5Grid.add(bDiscard, 1, 22);
+		fakeLabel.setMinWidth(550);
+		scene5Grid.add(fakeLabel, 6, 22);
+		scene5Hbox = new HBox(board, scene5Grid); //Puts the board and the rest of the buttons in an hbox
+		scene5Discard = new Scene(scene5Hbox, 1400, 700);
+		pSecondaryStage.setScene(scene5Discard);
+		pSecondaryStage.setTitle("Munchkin Discard Cards");
+		pSecondaryStage.show();
 	}
 	
 	
@@ -819,6 +958,10 @@ public class Main extends Application {
 		bDiscard = new Button("Discard");
 		bDiscard.setMinSize(200, 100);		
 		bDiscard.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
+		
+		bGoBack = new Button("Go Back");
+		bGoBack.setMinSize(200,  100);
+		bGoBack.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
 				
 		//Creating and styling toggle buttons
 		card1 = new ToggleButton("Card1");
@@ -895,9 +1038,7 @@ public class Main extends Application {
 		//Loading in the images
 		try 
 		{
-		  String filePath = new File("").getAbsolutePath();
-		  System.out.println(filePath);
-			munchkinBoard = new FileInputStream(filePath + "/src/Images/Board.jpg");
+			munchkinBoard = new FileInputStream("C:\\Users\\Lex\\Desktop\\Programs\\MunchkinCapstone\\src\\Images\\Board.jpg");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

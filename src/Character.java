@@ -13,7 +13,7 @@ public class Character
 	Character() //Constructor
 	{
 		race = "Human";
-		playerClass = "None";
+		playerClass = "Cleric";
 	}
 	
 	public String getRace()

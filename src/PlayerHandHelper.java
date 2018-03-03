@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import javafx.stage.Stage;
+
 public class PlayerHandHelper 
 {
 	PlayerHandHelper()
@@ -25,5 +27,12 @@ public class PlayerHandHelper
 	public void useTreasure(Character pcharacter, ArrayList pPlayerHand, int pCardChoice)
 	{
 		System.out.println("Treasure Used"); //For testing only. Sees the button is working
+	}
+	
+	//Used in Scene 4 and Scene 5. Discards the cards the player chose to discard. booleans will be true if they chose them.
+	public void discard(Stage pSecondaryStage, ArrayList pPlayerHand, boolean pCard1Choice, boolean pCard2Choice, boolean pCard3Choice, boolean pCard4Choice, boolean pCard5Choice)
+	{
+		System.out.println("Discarded"); //For testing only. Sees the button is working
+		pSecondaryStage.close(); //Closes stage 2
 	}
 }
