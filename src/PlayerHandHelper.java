@@ -31,7 +31,7 @@ public class PlayerHandHelper
 	}
 	
 	//Used in Scene 4 and Scene 5. Discards the cards the player chose to discard. booleans will be true if they chose them.
-	public void discardAbility(Character pChar, Label pInstructionLabel, int pCardsSelected, ArrayList pPlayerHand, boolean pCard1Choice, boolean pCard2Choice, boolean pCard3Choice, boolean pCard4Choice, boolean pCard5Choice)
+	public void discardAbility(Character pChar, Label pInstructionLabel, int pCardsSelected, ArrayList pPlayerHand, boolean pCard1Selected, boolean pCard2Selected, boolean pCard3Selected, boolean pCard4Selected, boolean pCard5Selected, boolean pCard6Selected)
 	{
 		//Will run it in a loop until the player has picked the correct number of cards
 		
@@ -54,11 +54,15 @@ public class PlayerHandHelper
 	}
 	
 	//Used in Scene 4. Discards the cards the player chose to discard. booleans will be true if they chose them. Has to discard at least one card.
-	public void discard(Label pInstructionLabel, int pCardsSelected, Stage pSecondaryStage, ArrayList pPlayerHand, boolean pCard1Choice, boolean pCard2Choice, boolean pCard3Choice, boolean pCard4Choice, boolean pCard5Choice)
+	public void discard(int pMaxCards, Label pInstructionLabel, int pCardsSelected, Stage pSecondaryStage, ArrayList pPlayerHand, boolean pCard1Selected, boolean pCard2Selected, boolean pCard3Selected, boolean pCard4Selected, boolean pCard5Selected, boolean pCard6Selected, boolean pCard7Selected, boolean pCard8Selected)
 	{
 		if(pCardsSelected < 1)
 		{
 			pInstructionLabel.setText("	Please choose to discard at least one card!");
+		}
+		else if((pPlayerHand.size() - pCardsSelected) > pMaxCards) //Does this if the amount of cards they would have after the discard is less than their allowed max
+		{
+			System.out.println("You would still have too many cards. Please click more to discard! You can only have " + pMaxCards + " cards!");
 		}
 		else
 		{

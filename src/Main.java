@@ -34,8 +34,6 @@ import javafx.scene.shape.Line;
 
 public class Main extends Application {
 	
-
-	//Attributes
 	//Buttons
 	private Button bChangeRace;
 	private Button bChangeClass;
@@ -65,6 +63,8 @@ public class Main extends Application {
 	private ToggleButton card5;
 	private ToggleButton card6; //For the dwarf or if too many cards are drawn
 	private ToggleButton card7; //If the dwarf draws too many cards
+	private ToggleButton card8; //When the player first starts the game
+	
 	//Toggle Group
 	private ToggleGroup cardGroup;
 	
@@ -133,6 +133,10 @@ public class Main extends Application {
 	private boolean card3Selected = false; //Keeps track of if card 3 is selected in Scenes 4 and 5
 	private boolean card4Selected = false; //Keeps track of if card 4 is selected in Scenes 4 and 5
 	private boolean card5Selected = false; //Keeps track of if card 5 is selected in Scenes 4 and 5
+	private boolean card6Selected = false; //Keeps track of if card 6 is selected in Scenes 4 and 5
+	private boolean card7Selected = false; //Keeps track of if card 7 is selected in Scenes 4 and 5
+	private boolean card8Selected = false; //Keeps track of if card 8 is selected in Scenes 4 and 5
+	
 	private int maxCards = 5; //Keeps track of how many cards the player can have. 5 normally, 6 for dwarves
 	private boolean turningUsed, berserkingUsed, charmUsed, flightUsed = false; //Keeps track of if the player has used their class ability or not
 	private boolean monsterDrawn = false; //Sees if a monster has been drawn 
@@ -161,6 +165,7 @@ public class Main extends Application {
 		
 	}
 	
+	
 	public void startScene(Stage pPrimaryStage)
 	{
 		monsterDrawn = false;
@@ -170,6 +175,17 @@ public class Main extends Application {
 		berserkingUsed = false;
 		flightUsed = false;
 		charmUsed = false;
+		
+		//No cards are selected by default in every scene
+		cardsSelected = 0;
+		card1Selected = false;
+		card2Selected = false;
+		card3Selected = false;
+		card4Selected = false;
+		card5Selected = false;
+		card6Selected = false;
+		card7Selected = false;
+		card8Selected = false;
 		
 		if(character.getRace() == "Dwarf") //Checks if player is a dwarf. If yes then sets their max cards to 6
 		{
@@ -201,12 +217,58 @@ public class Main extends Application {
 		scene1Grid.add(bHalflingSell, 7, 3);
 		scene1Grid.add(bSellTreasure, 7, 5);
 		scene1Grid.add(separator, 1,10,8,1);
-		cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+		
+
+		
+		//Adds cards to the scene according to how many the player has
+		if(playerHand.size() == 0)
+		{
+			cardsHbox = new HBox();
+		}
+		else if(playerHand.size() == 1)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1);
+		}
+		else if(playerHand.size() == 2)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2);
+		}
+		else if(playerHand.size() == 3)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3);
+		}
+		else if(playerHand.size() == 4)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4);
+		}
+		else if(playerHand.size() == 5)
+		{	
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+		}
+		else if(playerHand.size() == 6)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
+		}
+		else //When the game starts the player starts with 8 cards
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7, card8); //Puts all the cards in one hbox
+		}
+		
 		scene1Grid.add(cardsHbox, 1, 12, 8, 1);
 		scene1Grid.add(actionLabel, 1, 15, 8, 1);
 		scene1Hbox = new HBox(board, scene1Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
 		scene1Pane = new Pane(scene1Hbox, bDoorDeck); //Made a pane so I can put the door deck button wherever I want
-		scene1Draw1 = new Scene(scene1Pane, 1400, 700);
+		
+		//Sets the size of the scene according to how many cards the player has
+		if(playerHand.size() < 6)
+		{
+			scene1Draw1 = new Scene(scene1Pane, 1400, 700);
+		}
+		else //When the player starts the game they start with 8 cards
+		{
+			scene1Draw1 = new Scene(scene1Pane, 1600, 700);
+		}
+		
 		pPrimaryStage.setScene(scene1Draw1);
 		pPrimaryStage.setTitle("Munchkin First Draw");
 		pPrimaryStage.show();
@@ -300,7 +362,52 @@ public class Main extends Application {
 			//Grays out or ungrays out the proper buttons
 			EnableButtons(cardChoice, playerHand);
 		});
+		
+		card6.setOnAction(e-> 
+		{
+			if(card6.isSelected())
+			{
+				cardChoice = 5; //Card is equal to playerhand.get(5); Card 6
+			}
+			else 
+			{
+				cardChoice = -1;
+			}
+				
+			//Grays out or ungrays out the proper buttons
+			EnableButtons(cardChoice, playerHand);
+		});
+		
+		card7.setOnAction(e-> 
+		{
+			if(card5.isSelected())
+			{
+				cardChoice = 6; //Card is equal to playerhand.get(6);. Card 7
+			}
+			else 
+			{
+				cardChoice = -1;
+			}
+				
+			//Grays out or ungrays out the proper buttons
+			EnableButtons(cardChoice, playerHand);
+		});
 	
+		card8.setOnAction(e-> 
+		{
+			if(card8.isSelected())
+			{
+				cardChoice = 7; //Card is equal to playerhand.get(7);. Card 8
+			}
+			else 
+			{
+				cardChoice = -1;
+			}
+				
+			//Grays out or ungrays out the proper buttons
+			EnableButtons(cardChoice, playerHand);
+		});
+		
 		//Button actions for Scene 1
 		bRules.setOnAction(e-> Rules());
 		bChangeRace.setOnAction(e-> characterHelper.changeRace(character, playerHand, cardChoice));
@@ -315,6 +422,15 @@ public class Main extends Application {
 			Draw1st = true;
 			
 			//Makes sure the player doesn't go over their card limit
+			if(playerHand.get(playerHand.size()-1) instanceof Monster)
+			{
+				monsterDrawn = true;
+			}
+			else
+			{
+				monsterDrawn = false;
+			}
+			
 			if(playerHand.size() > maxCards)
 			{
 				discardScene(pPrimaryStage);
@@ -331,6 +447,23 @@ public class Main extends Application {
 	//Sets the stage to either a monster encounter or to their second draw depending on if a monster was drawn in scene 1 or not
 	public void switchScene(Stage pPrimaryStage)
 	{
+		
+		//Setting up the layout
+		setStyles();
+				
+		//No cards are selected by default in every scene
+		cardsSelected = 0;
+		card1Selected = false;
+		card2Selected = false;
+		card3Selected = false;
+		card4Selected = false;
+		card5Selected = false;
+		card6Selected = false;
+		card7Selected = false;
+		card8Selected = false;
+		
+		//Setting up the layout
+				
 		if(character.getRace() == "Dwarf") //Checks if player is a dwarf. If yes then sets their max cards to 6
 		{
 			maxCards = 6;
@@ -341,17 +474,17 @@ public class Main extends Application {
 		}
 		
 		//If the last drawn card is a monster, the player has drawn a monster. -1 since arraylists start at 0
-		if(playerHand.get(playerHand.size()-1) instanceof Monster)
-		{
-			monsterDrawn = true;
-		}
 		
 		//Goes to scene 2 if the last card drawn is a monster.
 		if(monsterDrawn == true)
 		{
+			//Setting up the layout
+			setStyles();
+			
+			Draw1st = false; //This is the monster encounter not the first draw
+			
 			//Creates new instances of the objects
 			//Setting up the layout for Scene 2
-			setStyles();
 			scene2Grid = new GridPane();
 			bMonsterEncounter.setTranslateX(75);
 			bMonsterEncounter.setTranslateY(200);
@@ -368,7 +501,37 @@ public class Main extends Application {
 			scene2Grid.add(bBerserking, 6, 1, 2, 2);
 			scene2Grid.add(bCharm, 6, 3, 2, 2);
 			scene2Grid.add(separator, 1,9,8,1);
-			cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+			
+			//Puts however many cards the player is holding into an hbox
+			if(playerHand.size() == 0)
+			{
+				cardsHbox = new HBox(10, characterInfo);
+			}
+			else if(playerHand.size() == 1)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1);
+			}
+			else if(playerHand.size() == 2)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2);
+			}
+			else if(playerHand.size() == 3)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3);
+			}
+			else if(playerHand.size() == 4)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4);
+			}
+			else if(playerHand.size() == 5)
+			{	
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+			}
+			else
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
+			}
+			
 			scene2Grid.add(cardsHbox, 1, 12, 8, 1);
 			scene2Grid.add(actionLabel, 1, 14, 8, 1);
 			scene2Hbox = new HBox(board, scene2Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
@@ -472,6 +635,36 @@ public class Main extends Application {
 				EnableButtons(cardChoice, playerHand);
 			});
 			
+			card5.setOnAction(e-> 
+			{
+				if(card5.isSelected())
+				{
+					cardChoice = 4; //Card is equal to playerhand.get(4). Card 5,		
+				}
+				else
+				{
+					cardChoice = -1;
+				}
+							
+				//Grays out or ungrays out the proper buttons
+				EnableButtons(cardChoice, playerHand);
+			});
+			
+			card6.setOnAction(e-> 
+			{
+				if(card6.isSelected())
+				{
+					cardChoice = 5; //Card is equal to playerhand.get(3). Card 4,		
+				}
+				else
+				{
+					cardChoice = -1;
+				}
+							
+				//Grays out or ungrays out the proper buttons
+				EnableButtons(cardChoice, playerHand);
+			});
+			
 			//Button actions for Scene 1
 			bRules.setOnAction(e-> Rules());
 			bTreasureBonus.setOnAction(e-> playerHandHelper.useTreasure(character, playerHand, cardChoice));
@@ -517,10 +710,10 @@ public class Main extends Application {
 		//The last card drawn is not a monster card so the player gets to draw again!
 		else
 		{
+			
+			setStyles();
 			Draw1st = false; //It is the second draw
 			
-			//Setting up the layout for Scene 3
-			setStyles();
 			bDoorDeck.setTranslateX(19);
 			bDoorDeck.setTranslateY(497);
 			scene3Grid = new GridPane();
@@ -538,7 +731,37 @@ public class Main extends Application {
 			scene3Grid.add(bHalflingSell, 7, 3);
 			scene3Grid.add(bSellTreasure, 7, 5);
 			scene3Grid.add(separator, 1,10,8,1);
-			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+
+			//Puts however many cards the character has in the hbox
+			if(playerHand.size() == 0)
+			{
+				cardsHbox = new HBox(10, characterInfo);
+			}
+			else if(playerHand.size() == 1)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1);
+			}
+			else if(playerHand.size() == 2)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2);
+			}
+			else if(playerHand.size() == 3)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3);
+			}
+			else if(playerHand.size() == 4)
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4);
+			}
+			else if(playerHand.size() == 5)
+			{	
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+			}
+			else
+			{
+				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
+			}
+			
 			scene3Grid.add(cardsHbox, 1, 12, 8, 1);
 			scene3Grid.add(actionLabel, 1, 15, 8, 1);
 			scene3Hbox = new HBox(board, scene3Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
@@ -668,7 +891,15 @@ public class Main extends Application {
 	
 	public void abilityScene(Stage pPrimaryStage) 
 	{
-		
+		//No cards are selected by default in every scene
+		cardsSelected = 0;
+		card1Selected = false;
+		card2Selected = false;
+		card3Selected = false;
+		card4Selected = false;
+		card5Selected = false;
+		card6Selected = false;
+		card7Selected = false;
 		monsterDrawn = true; //Will make this method go back to the monster encounter scene when done
 		
 		setStyles();
@@ -679,6 +910,9 @@ public class Main extends Application {
 		card3.setToggleGroup(null);
 		card4.setToggleGroup(null);
 		card5.setToggleGroup(null);
+		card6.setToggleGroup(null);
+		card7.setToggleGroup(null);
+		card8.setToggleGroup(null);
 		
 		instructionLabel.setText("	Please choose up to three cards below to use your class ability!"); //Changing the text of the instruction label
 		
@@ -688,7 +922,37 @@ public class Main extends Application {
 		scene4Grid.setVgap(10);
 		scene4Grid.add(instructionLabel, 1, 0, 7, 1);
 		scene4Grid.add(bRules, 8, 0);
-		cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+		
+		//Puts however many cards the player has into an hbox
+		if(playerHand.size() == 0)
+		{
+			cardsHbox = new HBox(10, characterMonsterInfo);
+		}
+		else if(playerHand.size() == 1)
+		{
+			cardsHbox = new HBox(10, characterMonsterInfo, card1);
+		}
+		else if(playerHand.size() == 2)
+		{
+			cardsHbox = new HBox(10, characterMonsterInfo, card1, card2);
+		}
+		else if(playerHand.size() == 3)
+		{
+			cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3);
+		}
+		else if(playerHand.size() == 4)
+		{
+			cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4);
+		}
+		else if(playerHand.size() == 5)
+		{	
+			cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+		}
+		else
+		{
+			cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
+		}
+		
 		scene4Grid.add(cardsHbox, 1, 7, 8, 1);
 		actionLabel.setMinHeight(70); //Readjusting the height of the action label
 		scene4Grid.add(actionLabel, 1, 17, 9, 1);
@@ -773,13 +1037,28 @@ public class Main extends Application {
 			}
 		});
 		
+		card6.setOnAction(e-> //Implemented for dwarves
+		{
+			if(card5.isSelected())
+			{
+				card5Selected = true; //Card 6 is selected
+				cardsSelected++;
+			}
+			else 
+			{
+				card5Selected = false; //Card 6 is not selected
+				cardsSelected--;
+			}
+		});
+		
+		
 		//Button actions for scene 4
 		bRules.setOnAction(e-> Rules());
 		
 		//Will discard if the player has toggles 3 cards or less
 		bDiscard.setOnAction(e-> 
 		{
-			playerHandHelper.discardAbility(character, instructionLabel, cardsSelected, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected);
+			playerHandHelper.discardAbility(character, instructionLabel, cardsSelected, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected, card6Selected);
 			//Only continues if at least 1 card is selected and 3 or less cards are selected
 			if(cardsSelected <=3 && cardsSelected >= 1)
 			{		
@@ -792,13 +1071,31 @@ public class Main extends Application {
 	
 	public void discardScene(Stage pPrimaryStage)
 	{
+		
+		//No cards are selected by default in every scene
+		cardsSelected = 0;
+		card1Selected = false;
+		card2Selected = false;
+		card3Selected = false;
+		card4Selected = false;
+		card5Selected = false;
+		card6Selected = false;
+		card7Selected = false;
+		card8Selected = false;
+		
 		setStyles();
+		
 		//Removing all the cards from a toggle group so they can select more than one
 		card1.setToggleGroup(null);
 		card2.setToggleGroup(null);
 		card3.setToggleGroup(null);
 		card4.setToggleGroup(null);
 		card5.setToggleGroup(null);
+		card6.setToggleGroup(null);
+		card7.setToggleGroup(null);
+		card8.setToggleGroup(null);
+		
+		
 		
 		instructionLabel.setText("	You have obtained too many cards! Please choose some to discard below!");
 		
@@ -808,14 +1105,62 @@ public class Main extends Application {
 		scene5Grid.setVgap(10);
 		scene5Grid.add(instructionLabel, 1, 0, 7, 1);
 		scene5Grid.add(bRules, 8, 0);
-		cardsHbox = new HBox(10, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+		
+		if(playerHand.size() == 0)
+		{
+			cardsHbox = new HBox(10, characterInfo);
+		}
+		else if(playerHand.size() == 1)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1);
+		}
+		else if(playerHand.size() == 2)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2);
+		}
+		else if(playerHand.size() == 3)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3);
+		}
+		else if(playerHand.size() == 4)
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4);
+		}
+		else if(playerHand.size() == 5) //If the player is not a dwarf they can hold 5
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+		}
+		else if(playerHand.size() == 6) //If the player is a dwarf they can hold 6 or if the player has too many cards
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
+		}
+		else if(playerHand.size() == 7) //If the dwarf has too many cards (7) 
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7); //Puts all the cards in one hbox
+		}
+		else //If it's the beginning of the game and the player has 8 cards to discard
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7, card8);
+		}
+		
 		scene5Grid.add(characterInfo, 1, 7);
 		scene5Grid.add(cardsHbox, 1, 9, 8, 1);
 		scene5Grid.add(bDiscard, 1, 22);
 		fakeLabel.setMinWidth(550);
 		scene5Grid.add(fakeLabel, 6, 22);
 		scene5Hbox = new HBox(board, scene5Grid); //Puts the board and the rest of the buttons in an hbox
-		scene5Discard = new Scene(scene5Hbox, 1400, 700);
+		
+		//Sets the size of the scene according to how many cards the player has
+		if(playerHand.size() < 6)
+		{
+			//savedline
+			scene5Discard = new Scene(scene5Hbox, 1400, 700);
+		}
+		else //When the player starts the game they start with 8 cards
+		{
+			scene5Discard = new Scene(scene5Hbox, 1500, 700);
+		}
+		
 		pPrimaryStage.setScene(scene5Discard);
 		pPrimaryStage.setTitle("Munchkin Discard Cards");
 		pPrimaryStage.show();
@@ -892,13 +1237,56 @@ public class Main extends Application {
 			}
 		});
 		
+		card6.setOnAction(e-> 
+		{
+			if(card6.isSelected())
+			{
+				card6Selected = true; //Card 5 is selected
+				cardsSelected++;
+			}
+			else 
+			{
+				card6Selected = false; //Card 5 is not selected
+				cardsSelected--;
+			}
+		});
+		
+		card7.setOnAction(e-> 
+		{
+			if(card7.isSelected())
+			{
+				card7Selected = true; //Card 5 is selected
+				cardsSelected++;
+			}
+			else 
+			{
+				card7Selected = false; //Card 5 is not selected
+				cardsSelected--;
+			}
+		});
+		
+		card8.setOnAction(e-> 
+		{
+			if(card8.isSelected())
+			{
+				card8Selected = true; //Card 5 is selected
+				cardsSelected++;
+			}
+			else 
+			{
+				card8Selected = false; //Card 5 is not selected
+				cardsSelected--;
+			}
+		});
+		
 		//Button Actions
 		bDiscard.setOnAction(e->
 		{
 			//Player drew too many cards
-			playerHandHelper.discard(instructionLabel, cardsSelected, secondaryStage, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected);
-			//Only continues if at least 1 card is selected
-			if(cardsSelected >=1)
+			playerHandHelper.discard(maxCards, instructionLabel, cardsSelected, secondaryStage, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected, card6Selected, card7Selected, card8Selected);
+			
+			//Only continues if at least 1 card is selected and the amount of cards they would have after the discard is less than their allowed max
+			if(cardsSelected >=1 && (playerHand.size() - cardsSelected) <= maxCards)
 			{
 				if(Draw1st == false) //Player was at stage 3 and drew too many, go to stage 1 after discard
 				{
@@ -1144,28 +1532,36 @@ public class Main extends Application {
 				
 		//Creating and styling toggle buttons
 		card1 = new ToggleButton("Card1");
-		card1.setMinSize(160,235);
+		card1.setMinSize(130, 205);
 		card1.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		card2 = new ToggleButton("Card2");
-		card2.setMinSize(160,235);
+		card2.setMinSize(130, 205);
 		card2.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		card3 = new ToggleButton("Card3");
-		card3.setMinSize(160,235);
+		card3.setMinSize(130, 205);
 		card3.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		card4 = new ToggleButton("Card4");
-		card4.setMinSize(160,235);
+		card4.setMinSize(130, 205);
 		card4.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		card5 = new ToggleButton("Card5");
-		card5.setMinSize(160,235);
+		card5.setMinSize(130, 205);
 		card5.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		card6 = new ToggleButton("Card6");
-		card6.setMinSize(160,235);
+		card6.setMinSize(130, 205);
 		card6.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
+		
+		card7 = new ToggleButton("Card7");
+		card7.setMinSize(130, 205);
+		card7.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
+		
+		card8 = new ToggleButton("Card8");
+		card8.setMinSize(130, 205);
+		card8.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		//Putting the toggle buttons into a group
 		cardGroup = new ToggleGroup();
@@ -1175,6 +1571,8 @@ public class Main extends Application {
 		card4.setToggleGroup(cardGroup);
 		card5.setToggleGroup(cardGroup);
 		card6.setToggleGroup(cardGroup);
+		card7.setToggleGroup(cardGroup);
+		card8.setToggleGroup(cardGroup);
 				
 				
 		//Creating and styling labels
