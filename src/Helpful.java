@@ -18,7 +18,7 @@ public class Helpful extends DoorDeck
 	
 	public String randomHelpfulName() //generates a random name from among some helpful items
 	{
-		String[] helpfulNames = {"Ring of Miodan", "Healing Circlet of Emiah", "Athene's Unholy Grail", "Mipha's Grace", "Ghal Maraz", "Cloak of Petrification", "Crown of Bretonnia", "The Book of Grudges", "Scroll of the Divine" };
+		String[] helpfulNames = {"Ring \nof Miodan\n", "Healing \nCirclet of Emiah\n", "Athene's Unholy Grail\n", "Mipha's Grace\n", "Ghal Maraz\n", "Cloak \nof Petrification\n", "Crown \nof Bretonnia\n", "The Book \nof Grudges\n", "Scroll \nof the Divine\n" };
 		int index = (int) (Math.random() * helpfulNames.length);
 		String name = helpfulNames[index];
 		 

@@ -16,7 +16,7 @@ public class Monster extends DoorDeck
 	
 	public String randomMonsterName() //Will generate a monster name from a list of sp00ky names
 	{
-		String[] monsterNames = {"Malekith the Witch King", "Thresh the Chain Warden", "Eredin King of the Wild Hunt", "Jerodiah Evil Lord of Calican", "Archaon the EverChosen", "Kiodan Headman of the Vale", "Trayodath Sir of Trade", "Ariohan Rabbi of the Dead", "Nergal the Plague Lord" };
+		String[] monsterNames = {"Malekith \nthe Witch King\n", "Thresh \nthe Chain Warden\n", "Eredin \nKing of the Wild Hunt\n", "Jerodiah \nEvil Lord of Calican\n", "\nArchaon \nthe EverChosen", "Kiodan \nHeadman of the Vale\n", "Trayodath \nSir of Trade\n", "Ariohan \nRabbi of the Dead\n", "Nergal \nthe Plague Lord\n" };
 		int index = (int) (Math.random() * monsterNames.length);
 		String name = monsterNames[index];
 		 

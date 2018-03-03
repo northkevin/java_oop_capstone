@@ -106,6 +106,9 @@ public class PlayerHandHelper
 	//Used in Scene 4. Discards the cards the player chose to discard. booleans will be true if they chose them. Has to discard at least one card.
 	public void discard(int pMaxCards, Label pInstructionLabel, int pCardsSelected, Stage pSecondaryStage, ArrayList pPlayerHand, boolean pCard1Selected, boolean pCard2Selected, boolean pCard3Selected, boolean pCard4Selected, boolean pCard5Selected, boolean pCard6Selected, boolean pCard7Selected, boolean pCard8Selected)
 	{
+		
+		int size = pPlayerHand.size(); //Keeps track of the size of the player's hand
+		
 		if(pCardsSelected < 1)
 		{
 			pInstructionLabel.setText("	Please choose to discard at least one card!");
@@ -157,13 +160,13 @@ public class PlayerHandHelper
 				//pPlayerHand.set(7, "0"); //card 8 is replaced so the arraylist doesn't move yet
 			}
 			
-			for(int s = 0; s < pCardsSelected; s++) //Goes to remove all the "0"'s we put in the arraylist
+			for(int s = 0; s < size; s++) //Goes to remove all the "0"'s we put in the arraylist
 			{	
 				if(pPlayerHand.get(s) == "0")
 				{
 					pPlayerHand.remove(s);
-					s--; //To account for the array moving
-					pCardsSelected = pCardsSelected - 1; //To account for the array moving
+					s--; //To account for the arraylist moving
+					size = size - 1; //To account for the arraylist moving
 				}
 			}
 

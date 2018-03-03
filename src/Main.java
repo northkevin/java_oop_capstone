@@ -1833,7 +1833,9 @@ public class Main extends Application {
 		{
 		  String filePath = new File("").getAbsolutePath();
 		  munchkinBoard = new FileInputStream(filePath + "/src/Images/Board.jpg");
-		} catch (FileNotFoundException e) {
+		}
+		catch (FileNotFoundException e)
+		{
 			e.printStackTrace();
 		}
 		iBoard = new Image(munchkinBoard);
