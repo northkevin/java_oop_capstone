@@ -1833,7 +1833,6 @@ public class Main extends Application {
 		{
 		  String filePath = new File("").getAbsolutePath();
 		  munchkinBoard = new FileInputStream(filePath + "/src/Images/Board.jpg");
-			munchkinBoard = new FileInputStream("/Users/kevin_north/git/capstone_temp/src/Images/Board.jpg");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
