@@ -121,6 +121,7 @@ public class Main extends Application {
 	private Wizard wizard;
 	private Helpful helpful;
 	private MonsterHelper monsterHelper;
+	private Curse curse;
 	
 	//Attributes
 	private int doorDeckNum = 0; //Keeps track of how many cards are in the door deck
@@ -159,9 +160,9 @@ public class Main extends Application {
 		wizard = new Wizard();
 		helpful = new Helpful();
 		monsterHelper = new MonsterHelper();
+		curse = new Curse();
 		
-		startScene(primaryStage);
-
+		//startScene(primaryStage);
 		
 	}
 	
