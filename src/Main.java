@@ -126,7 +126,7 @@ public class Main extends Application {
 	private int doorDeckNum = 0; //Keeps track of how many cards are in the door deck
 	private ArrayList doorCards, playerHand;
 	private int cardChoice = -1; //Associates the card number with the the toggle button clicked. -1 is not an index of an arraylist
-	private boolean Drawn = false; //Keeps track of if the player has drawn yet or not. Exit loop condition for scene 1 and 3.
+	private boolean Draw1st = false; //Keeps track if it is the first draw or second draw
 	private int cardsSelected = 0; //Keeps track of how many cards are selected in Scene 4
 	private boolean card1Selected = false; //Keeps track of if card 1 is selected in Scenes 4 and 5
 	private boolean card2Selected = false; //Keeps track of if card 2 is selected in Scenes 4 and 5
@@ -134,6 +134,8 @@ public class Main extends Application {
 	private boolean card4Selected = false; //Keeps track of if card 4 is selected in Scenes 4 and 5
 	private boolean card5Selected = false; //Keeps track of if card 5 is selected in Scenes 4 and 5
 	private int maxCards = 5; //Keeps track of how many cards the player can have. 5 normally, 6 for dwarves
+	private boolean turningUsed, berserkingUsed, charmUsed, flightUsed = false; //Keeps track of if the player has used their class ability or not
+	private boolean monsterDrawn = false; //Sees if a monster has been drawn 
 	
 	@Override
 	public void start(Stage primaryStage) 
@@ -154,15 +156,30 @@ public class Main extends Application {
 		helpful = new Helpful();
 		monsterHelper = new MonsterHelper();
 		
-		//discardScene(primaryStage);
-		startScene(primaryStage, secondaryStage);
-		//abilityScene(primaryStage);
+		startScene(primaryStage);
+
 		
 	}
 	
-	public void startScene(Stage pPrimaryStage, Stage pSecondaryStage)
+	public void startScene(Stage pPrimaryStage)
 	{
-	
+		monsterDrawn = false;
+		
+		//Since it is not a monster encounter no class abilities have been used so they will be set to false
+		turningUsed = false;
+		berserkingUsed = false;
+		flightUsed = false;
+		charmUsed = false;
+		
+		if(character.getRace() == "Dwarf") //Checks if player is a dwarf. If yes then sets their max cards to 6
+		{
+			maxCards = 6;
+		}
+		else
+		{	
+			maxCards = 5; //Will set it back to 5 if they stop being a dwarf
+		}
+		
 		//Setting up the layout
 		setStyles();
 		
@@ -208,7 +225,8 @@ public class Main extends Application {
 			bHalflingSell.setDisable(false);
 		}
 			
-		//ToggleButton Actions for Scene 3
+		//ToggleButton Actions for Scene 1
+		cardsSelected = 0; //There are automatically no cards selected
 		card1.setOnAction(e-> 
 		{
 			if(card1.isSelected())
@@ -294,23 +312,42 @@ public class Main extends Application {
 		bDoorDeck.setOnAction(e->
 		{
 			playerHandHelper.drawDoor(doorCards, playerHand);
-			//if(playerHand.size() > maxCards)
-			//{	
-				//abilityScene(pPrimaryStage);
-			//}	
-			//else
-			//{	
-				switchScene(pPrimaryStage, pSecondaryStage);
-			//}
+			Draw1st = true;
+			
+			//Makes sure the player doesn't go over their card limit
+			if(playerHand.size() > maxCards)
+			{
+				discardScene(pPrimaryStage);
+			}
+			else
+			{
+				switchScene(pPrimaryStage);
+			}
+			
 		});
 	
 	}
 
 	//Sets the stage to either a monster encounter or to their second draw depending on if a monster was drawn in scene 1 or not
-	public void switchScene(Stage pPrimaryStage, Stage pSecondaryStage)
+	public void switchScene(Stage pPrimaryStage)
 	{
-		//Goes to scene 2 if the last card drawn is a monster. -1 because we arraylists start at 0
+		if(character.getRace() == "Dwarf") //Checks if player is a dwarf. If yes then sets their max cards to 6
+		{
+			maxCards = 6;
+		}
+		else
+		{
+			maxCards = 5; //Will set it back to 5 if they stop being a dwarf
+		}
+		
+		//If the last drawn card is a monster, the player has drawn a monster. -1 since arraylists start at 0
 		if(playerHand.get(playerHand.size()-1) instanceof Monster)
+		{
+			monsterDrawn = true;
+		}
+		
+		//Goes to scene 2 if the last card drawn is a monster.
+		if(monsterDrawn == true)
 		{
 			//Creates new instances of the objects
 			//Setting up the layout for Scene 2
@@ -349,19 +386,32 @@ public class Main extends Application {
 			//Enables the class abilities if the player is that class
 			if(character.getplayerClass() == "Cleric")
 			{
-				bTurning.setDisable(false);
+				if(turningUsed == false) //Does not enable if turning has already been used
+				{	
+					bTurning.setDisable(false);
+				}	
 			}
 			else if(character.getplayerClass() == "Warrior")
 			{
-				bBerserking.setDisable(false);
+				if(berserkingUsed == false) //Does not enable if berserking has already been used
+				{	
+					bBerserking.setDisable(false);
+				}	
 			}
 			else if(character.getplayerClass() == "Wizard")
 			{
-				bCharm.setDisable(false);
-				bFlight.setDisable(false);
+				if(charmUsed == false)
+				{
+					bCharm.setDisable(false); //Does not enable if charm has already been used
+				}
+				if(flightUsed == false)
+				{
+					bFlight.setDisable(false); //Does not enable if flight has already been used
+				}
 			}
 			
 			//ToggleButton Actions for scene 2
+			cardsSelected = 0; //There are automatically no cards selected
 			card1.setOnAction(e-> 
 			{
 				if(card1.isSelected())
@@ -428,18 +478,36 @@ public class Main extends Application {
 			bTurning.setOnAction(e-> 
 			{
 				cleric.turning(character, playerHand);
-				bTurning.setDisable(true); //Sets the ability to disabled after the character has used it
-				abilityScene(pSecondaryStage);
+				turningUsed = true; //Sets the ability to disabled after the character has used it
+				abilityScene(pPrimaryStage);
 			});
 			
-			bBerserking.setOnAction(e-> warrior.berserking(character, playerHand));
-			bFlight.setOnAction(e-> wizard.flight(character, playerHand));
-			bCharm.setOnAction(e-> wizard.charm(character, playerHand));
+			bBerserking.setOnAction(e-> 
+			{
+				warrior.berserking(character, playerHand);
+				berserkingUsed = true;
+				abilityScene(pPrimaryStage);
+				
+			});
+			
+			bFlight.setOnAction(e-> 
+			{
+				wizard.flight(character, playerHand);
+				flightUsed = true;
+				abilityScene(pPrimaryStage);
+			});
+			
+			bCharm.setOnAction(e-> 
+			{
+				wizard.charm(character, playerHand);
+				charmUsed = true;
+				abilityScene(pPrimaryStage);
+				
+			});
 			bMonsterEncounter.setOnAction(e-> 
 			{
-				
 				characterHelper.combat(character, playerHand, monsterHelper);
-				startScene(pPrimaryStage, pSecondaryStage);
+				startScene(pPrimaryStage);
 			});
 					
 			pPrimaryStage.setScene(scene2Monster);
@@ -449,6 +517,8 @@ public class Main extends Application {
 		//The last card drawn is not a monster card so the player gets to draw again!
 		else
 		{
+			Draw1st = false; //It is the second draw
+			
 			//Setting up the layout for Scene 3
 			setStyles();
 			bDoorDeck.setTranslateX(19);
@@ -493,6 +563,7 @@ public class Main extends Application {
 			}
 				
 			//ToggleButton Actions for Scene 3
+			cardsSelected = 0; //There are automatically no cards selected
 			card1.setOnAction(e-> 
 			{
 				if(card1.isSelected())
@@ -580,13 +651,26 @@ public class Main extends Application {
 			bDoorDeck.setOnAction(e->
 			{
 				playerHandHelper.drawDoor(doorCards, playerHand);
-				startScene(pPrimaryStage, pSecondaryStage);
+				
+				//Makes sure the player doesn't go over their card limit
+				if(playerHand.size() > maxCards)
+				{
+					discardScene(pPrimaryStage);
+				}
+				else
+				{
+					startScene(pPrimaryStage);
+				}
+				
 			});
 		}
 	}
 	
-	public void abilityScene(Stage pSecondaryStage) 
+	public void abilityScene(Stage pPrimaryStage) 
 	{
+		
+		monsterDrawn = true; //Will make this method go back to the monster encounter scene when done
+		
 		setStyles();
 		
 		//Removing all the cards from a toggle group so they can select more than one
@@ -613,11 +697,12 @@ public class Main extends Application {
 		scene4Grid.add(fakeLabel, 6, 22);
 		scene4Hbox = new HBox(board, scene4Grid); //Puts the board and the rest of the buttons in an hbox
 		scene4DiscardAbility = new Scene(scene4Hbox, 1400, 700);
-		pSecondaryStage.setScene(scene4DiscardAbility);
-		pSecondaryStage.setTitle("Munchkin Discard for Class Ability");
-		pSecondaryStage.show();
+		pPrimaryStage.setScene(scene4DiscardAbility);
+		pPrimaryStage.setTitle("Munchkin Discard for Class Ability");
+		pPrimaryStage.show();
 		
 		//Togglebutton actions for Scene 4
+		cardsSelected = 0; //There are automatically no cards selected
 		card1.setOnAction(e-> 
 		{
 			if(card1.isSelected())
@@ -692,19 +777,20 @@ public class Main extends Application {
 		bRules.setOnAction(e-> Rules());
 		
 		//Will discard if the player has toggles 3 cards or less
-		if(cardsSelected<= 3)
+		bDiscard.setOnAction(e-> 
 		{
-			bDiscard.setOnAction(e-> playerHandHelper.discard(pSecondaryStage, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected));
-		}
-		else
-		{
-			instructionLabel.setText("	You cannot choose more than 3 cards! Please choose up to three cards below to use your class ability!");
-		}
+			playerHandHelper.discardAbility(character, instructionLabel, cardsSelected, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected);
+			//Only continues if at least 1 card is selected and 3 or less cards are selected
+			if(cardsSelected <=3 && cardsSelected >= 1)
+			{		
+				switchScene(pPrimaryStage);
+			}
+			
+		});
 		
-		pSecondaryStage.setOnCloseRequest(e->e.consume()); //Makes it so the user can't exit out of the second stage 
 	}
 	
-	public void discardScene(Stage pSecondaryStage)
+	public void discardScene(Stage pPrimaryStage)
 	{
 		setStyles();
 		//Removing all the cards from a toggle group so they can select more than one
@@ -730,9 +816,102 @@ public class Main extends Application {
 		scene5Grid.add(fakeLabel, 6, 22);
 		scene5Hbox = new HBox(board, scene5Grid); //Puts the board and the rest of the buttons in an hbox
 		scene5Discard = new Scene(scene5Hbox, 1400, 700);
-		pSecondaryStage.setScene(scene5Discard);
-		pSecondaryStage.setTitle("Munchkin Discard Cards");
-		pSecondaryStage.show();
+		pPrimaryStage.setScene(scene5Discard);
+		pPrimaryStage.setTitle("Munchkin Discard Cards");
+		pPrimaryStage.show();
+		
+		//Togglebutton actions for Scene 4
+		cardsSelected = 0; //There are automatically no cards selected
+		card1.setOnAction(e-> 
+		{
+			if(card1.isSelected())
+			{
+				card1Selected = true; //Card 1 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card1Selected = false; //Card 1 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card2.setOnAction(e-> 
+		{
+			if(card2.isSelected())
+			{
+				card2Selected = true; //Card 1 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card2Selected = false; //Card 2 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card3.setOnAction(e-> 
+		{
+			if(card3.isSelected())
+			{
+				card3Selected = true; //Card 3 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card3Selected = false; //Card 3 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card4.setOnAction(e-> 
+		{
+			if(card4.isSelected())
+			{
+				card4Selected = true; //Card 4 is selected
+				cardsSelected++;
+			}
+			else
+			{
+				card4Selected = false; //Card 4 is not selected
+				cardsSelected--;
+			}
+		});
+				
+		card5.setOnAction(e-> 
+		{
+			if(card5.isSelected())
+			{
+				card5Selected = true; //Card 5 is selected
+				cardsSelected++;
+			}
+			else 
+			{
+				card5Selected = false; //Card 5 is not selected
+				cardsSelected--;
+			}
+		});
+		
+		//Button Actions
+		bDiscard.setOnAction(e->
+		{
+			//Player drew too many cards
+			playerHandHelper.discard(instructionLabel, cardsSelected, secondaryStage, playerHand, card1Selected, card2Selected, card3Selected, card4Selected, card5Selected);
+			//Only continues if at least 1 card is selected
+			if(cardsSelected >=1)
+			{
+				if(Draw1st == false) //Player was at stage 3 and drew too many, go to stage 1 after discard
+				{
+					startScene(pPrimaryStage);
+				}
+				else //Player was at stage 1 and drew too many(not monster), go to stage 3 after discard
+				{
+					switchScene(pPrimaryStage);
+				}
+			}
+			
+		});
+		
 	}
 	
 	
@@ -1020,7 +1199,7 @@ public class Main extends Application {
 		actionLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
 		actionLabel.setMinSize(1012, 40);
 		
-		characterInfo = new Label("Player Level: 1 \nPlayer Race: Human\nPlayer Class: none\nPlayer Gold: 0");
+		characterInfo = new Label("Player Level: " + character.getLevel()  + "\nPlayer Race: " + character.getRace() + "\nPlayer Class: " + character.getplayerClass() + "\nPlayer Gold: " + character.getGold());
 		
 		monsterActionLabel = new Label("	Please pick a treasure card from your hand to proceed with the\n	grayed out option below");
 		monsterActionLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
@@ -1030,7 +1209,7 @@ public class Main extends Application {
 		abilityLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
 		abilityLabel.setMinSize(450, 40);
 		
-		characterMonsterInfo = new Label("Player Level: 1 \nPlayer Race: Human\nPlayer Class: none\nPlayer Gold: 0\nFight Bonus: 0\nRun Bonus: 0");
+		characterMonsterInfo = new Label("Player Level: " + character.getLevel()  + "\nPlayer Race: " + character.getRace() + "\nPlayer Class: " + character.getplayerClass() + "\nPlayer Gold: " + character.getGold() + "\nFight Bonus: " + character.getFightBonus() + "\nRun Bonus:" + character.getRunBonus());
 				
 		//Making line to seperate buttons and cards
 		separator = new Line(0, 1, 1200, 1);

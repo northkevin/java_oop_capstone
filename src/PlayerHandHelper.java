@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class PlayerHandHelper 
@@ -30,9 +31,40 @@ public class PlayerHandHelper
 	}
 	
 	//Used in Scene 4 and Scene 5. Discards the cards the player chose to discard. booleans will be true if they chose them.
-	public void discard(Stage pSecondaryStage, ArrayList pPlayerHand, boolean pCard1Choice, boolean pCard2Choice, boolean pCard3Choice, boolean pCard4Choice, boolean pCard5Choice)
+	public void discardAbility(Character pChar, Label pInstructionLabel, int pCardsSelected, ArrayList pPlayerHand, boolean pCard1Choice, boolean pCard2Choice, boolean pCard3Choice, boolean pCard4Choice, boolean pCard5Choice)
 	{
-		System.out.println("Discarded"); //For testing only. Sees the button is working
-		pSecondaryStage.close(); //Closes stage 2
+		//Will run it in a loop until the player has picked the correct number of cards
+		
+		if(pCardsSelected < 1)
+		{
+			pInstructionLabel.setText("	Please choose at least one card to discard! Please choose up to three cards below to use your class ability!");
+		}
+		else if(pCardsSelected <= 3 && pCardsSelected > 1)
+		{	
+			
+			//TODO Discard the cards they want and give the player +1 fight bonus for each card discarded
+			
+			System.out.println("Discarded"); //For testing only. Sees the button is working
+		}	
+		else if(pCardsSelected > 3)
+		{
+			pInstructionLabel.setText("	You cannot choose more than 3 cards! Please choose up to three cards below to use your class ability!");
+		}
+
+	}
+	
+	//Used in Scene 4. Discards the cards the player chose to discard. booleans will be true if they chose them. Has to discard at least one card.
+	public void discard(Label pInstructionLabel, int pCardsSelected, Stage pSecondaryStage, ArrayList pPlayerHand, boolean pCard1Choice, boolean pCard2Choice, boolean pCard3Choice, boolean pCard4Choice, boolean pCard5Choice)
+	{
+		if(pCardsSelected < 1)
+		{
+			pInstructionLabel.setText("	Please choose to discard at least one card!");
+		}
+		else
+		{
+			//TODO Discard the cards they want from their hand
+			
+			System.out.println("Discarded"); //For testing only. Sees the button is working
+		}
 	}
 }
