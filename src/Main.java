@@ -1,5 +1,6 @@
 
 	
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -1830,7 +1831,9 @@ public class Main extends Application {
 		//Loading in the images
 		try 
 		{
-			munchkinBoard = new FileInputStream("C:\\Users\\Lex\\Desktop\\Programs\\MunchkinCapstone\\src\\Images\\Board.jpg");
+		  String filePath = new File("").getAbsolutePath();
+		  munchkinBoard = new FileInputStream(filePath + "/src/Images/Board.jpg");
+			munchkinBoard = new FileInputStream("/Users/kevin_north/git/capstone_temp/src/Images/Board.jpg");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
