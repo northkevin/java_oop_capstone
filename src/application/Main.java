@@ -50,25 +50,7 @@ public class Main extends Application {
   // copy paste of BOARD elements
   // -----
   // -----
-  private Button bChangeRace;
-  private Button bChangeClass;
-  private Button bHelpfulLevel; //Button clicked to use helpful card to level up
-  private Button bHelpfulSell; //Button clicked to use helfpul card to sell treasure for 2x
-  private Button bHalflingSell; /*Halflings can sell 1 piece of treasure for double value per turn. 
-              Goes gray if it has already been used. Also gray if they are not halfling*/
-  private Button bSellTreasure; //Button clicked to sell treasure
-  private Button bRules;
-  private Button bDoorDeck; //Button to click to draw
-  private Button bGoldLevel; //Pay 1000 gold to level up
-  private Button bPlayMonster; //Can play a monster
-  private Button bTreasureBonus; //Use a treasure card to gain a fight bonus
-  private Button bTurning; //Cleric class ability
-  private Button bFlight; //Wizard class ability
-  private Button bBerserking; //warrior class ability
-  private Button bCharm; //Wizard class ability
-  private Button bMonsterEncounter; //For the monster card in monster encounter
-  private Button bDiscard;
-  private Button bGoBack;
+  
   
   //Toggle Buttons (Cards)
   private ToggleButton card1;
@@ -134,260 +116,46 @@ public class Main extends Application {
   // 
   // Scene 1
   private void initPrimaryScene() {
-//    monsterDrawn = false;
-//    
-//    //Since it is not a monster encounter no class abilities have been used so they will be set to false
-//    turningUsed = false;
-//    berserkingUsed = false;
-//    flightUsed = false;
-//    charmUsed = false;
+    //Moved booleans into class 'Game' to track state of the game.
     game = new Game();
-    
-//  if(character.getRace() == "Dwarf") //Checks if player is a dwarf. If yes then sets their max cards to 6
-//  {
-//    maxCards = 6;
-//  }
-//  else
-//  { 
-//    maxCards = 5; //Will set it back to 5 if they stop being a dwarf
-//  }
     
     //Setting up the layout
     initBoard();
+    ButtonController buttonController = new ButtonController();
     
     //Setting up the layout for Scene1
-    bDoorDeck.setTranslateX(19);
-    bDoorDeck.setTranslateY(497);
+    //TODO move margin translate numbers into CSS
+    buttonController.bDoorDeck.setTranslateX(19);
+    buttonController.bDoorDeck.setTranslateY(497);
     sceneGrid = new GridPane();
     sceneGrid.setHgap(10);
     sceneGrid.setVgap(10);
     sceneGrid.add(instructionLabel, 1, 0, 7, 1);
-    sceneGrid.add(bRules, 8, 0);
+    sceneGrid.add(buttonController.bRules, 8, 0);
     sceneGrid.add(fakeLabel, 2, 3);
-    sceneGrid.add(bChangeRace, 3, 3);
-    sceneGrid.add(bChangeClass, 3, 5);
+    sceneGrid.add(buttonController.bChangeRace, 3, 3);
+    sceneGrid.add(buttonController.bChangeClass, 3, 5);
     sceneGrid.add(fakeLabel2, 4, 3);
-    sceneGrid.add(bHelpfulLevel, 5, 3);
-    sceneGrid.add(bHelpfulSell, 5, 5);
+    sceneGrid.add(buttonController.bHelpfulLevel, 5, 3);
+    sceneGrid.add(buttonController.bHelpfulSell, 5, 5);
     sceneGrid.add(fakeLabel3, 6, 5);
-    sceneGrid.add(bHalflingSell, 7, 3);
-    sceneGrid.add(bSellTreasure, 7, 5);
+    sceneGrid.add(buttonController.bHalflingSell, 7, 3);
+    sceneGrid.add(buttonController.bSellTreasure, 7, 5);
     sceneGrid.add(separator, 1,10,8,1);
     cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
     sceneGrid.add(cardsHbox, 1, 12, 8, 1);
     sceneGrid.add(actionLabel, 1, 15, 8, 1);
     scene1Hbox = new HBox(board, sceneGrid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
-    scenePane = new Pane(scene1Hbox, bDoorDeck); //Made a pane so I can put the door deck button wherever I want
+    scenePane = new Pane(scene1Hbox, buttonController.bDoorDeck); //Made a pane so I can put the door deck button wherever I want
     primaryScene = new Scene(scenePane, 1400, 700);
     primaryStage.setScene(primaryScene);
     primaryStage.setTitle("Munchkin First Draw");
     primaryStage.show();
     
     //Disabling all buttons at the beginning
-    bChangeRace.setDisable(true);
-    bChangeClass.setDisable(true);
-    bHalflingSell.setDisable(true);
-    bSellTreasure.setDisable(true);
-    bHelpfulLevel.setDisable(true);
-    bHelpfulSell.setDisable(true);
-          
-    //Enables the halfing race ability if the player is a halfling
-    if(player.getCharacter().getRace() == "Halfling")
-    {
-      bHalflingSell.setDisable(false);
-    }
-   
+    ButtonController.displayButtonsNone(null);
+    ButtonController.checkDispayHalflingButton();
     
-//  //ToggleButton Actions for Scene 1
-//  cardsSelected = 0; //There are automatically no cards selected
-//  card1.setOnAction(e-> 
-//  {
-//    if(card1.isSelected())
-//    {
-//      cardChoice = 0; //Card is equal to playerhand.get(0). Card 1.
-//      // card1.notifyObservers()
-//    }
-//    else
-//    {
-//      cardChoice = -1;
-//    }
-//    //Grays out or ungrays out the proper buttons
-//    EnableButtons(cardChoice, playerHand);
-//  });
-//          
-//  card2.setOnAction(e-> 
-//  {
-//    if(card2.isSelected())
-//    {
-//      cardChoice = 1; //Card is equal to playerhand.get(1). Card 2
-//    }
-//    else
-//    {
-//      cardChoice = -1;
-//    }
-//      
-//    //Grays out or ungrays out the proper buttons
-//    EnableButtons(cardChoice, playerHand);
-//  });
-//      
-//  card3.setOnAction(e-> 
-//  {
-//    if(card3.isSelected())
-//    {
-//      cardChoice = 2; //Card is equal to playerhand.get(2). Card 3
-//    }
-//    else
-//    {
-//      cardChoice = -1;
-//    }
-//      
-//    //Grays out or ungrays out the proper buttons
-//    EnableButtons(cardChoice, playerHand);
-//  });
-//      
-//  card4.setOnAction(e-> 
-//  {
-//    if(card4.isSelected())
-//    {
-//      cardChoice = 3; //Card is equal to playerhand.get(3). Card 4,   
-//    }
-//    else
-//    {
-//      cardChoice = -1;
-//    }
-//      
-//    //Grays out or ungrays out the proper buttons
-//    EnableButtons(cardChoice, playerHand);
-//  });
-//      
-//  card5.setOnAction(e-> 
-//  {
-//    if(card5.isSelected())
-//    {
-//      cardChoice = 4; //Card is equal to playerhand.get(4);. Card 5
-//    }
-//    else 
-//    {
-//      cardChoice = -1;
-//    }
-//      
-//    //Grays out or ungrays out the proper buttons
-//    EnableButtons(cardChoice, playerHand);
-//  });
-//
-//  //Button actions for Scene 1
-//  bRules.setOnAction(e-> Rules());
-//  bChangeRace.setOnAction(e-> characterHelper.changeRace(character, playerHand, cardChoice));
-//  bChangeClass.setOnAction(e-> characterHelper.changeClass(character, playerHand, cardChoice));
-//  bHelpfulLevel.setOnAction(e-> helpful.helpLevelUp(character, playerHand, cardChoice));
-//  bHelpfulSell.setOnAction(e-> helpful.sellDoubleVal(character, playerHand, cardChoice));
-//  bHalflingSell.setOnAction(e-> halfling.sellDouble(bHalflingSell, playerHand, character, cardChoice));
-//  bSellTreasure.setOnAction(e-> playerHandHelper.sellTreasure(character, playerHand, cardChoice));
-//  bDoorDeck.setOnAction(e->
-//  {
-//    playerHandHelper.drawDoor(doorCards, playerHand);
-//    Draw1st = true;
-//    
-//    //Makes sure the player doesn't go over their card limit
-//    if(playerHand.size() > maxCards)
-//    {
-//      discardScene(pPrimaryStage);
-//    }
-//    else
-//    {
-//      switchScene(pPrimaryStage);
-//    }
-//    
-//  });
-//}
-//
-//public void EnableButtons(int pCardChoice, ArrayList pPlayerHand)
-//{
-//  
-//  if(pCardChoice == -1)
-//  {
-//    bChangeRace.setDisable(true);
-//    bChangeClass.setDisable(true);
-//    bGoldLevel.setDisable(true);
-//    bPlayMonster.setDisable(true);
-//    bHalflingSell.setDisable(true); // unique
-//    bSellTreasure.setDisable(true);
-//    bTreasureBonus.setDisable(true); // half/half
-//    bHelpfulLevel.setDisable(true);
-//    bHelpfulSell.setDisable(true);
-//  }
-//  else
-//  { 
-//    if(pPlayerHand.get(pCardChoice) instanceof Monster) //Makes play monster clickable if the card is a monster. All others are gray.
-//    {
-//      bHelpfulLevel.setDisable(true);
-//      bHelpfulSell.setDisable(true);
-//      bPlayMonster.setDisable(false);
-//      bChangeRace.setDisable(true);
-//      bChangeClass.setDisable(true);
-//      bGoldLevel.setDisable(true);
-//      bSellTreasure.setDisable(true);
-//    }
-//    else if(pPlayerHand.get(pCardChoice) instanceof Treasure) //Makes sell treasure and treasure bonus clickable if the card is a treasure card. All others are gray.
-//    {
-//      bSellTreasure.setDisable(false);
-//      bChangeRace.setDisable(true);
-//      bChangeClass.setDisable(true);
-//      bGoldLevel.setDisable(true);
-//      bPlayMonster.setDisable(true);
-//      bTreasureBonus.setDisable(false);
-//      bHelpfulLevel.setDisable(true);
-//      bHelpfulSell.setDisable(true);
-//    
-//    }
-//    //Makes change race clickable if the card is a race card. All others are gray.
-//    else if(pPlayerHand.get(pCardChoice) instanceof Halfling || pPlayerHand.get(pCardChoice) instanceof Elf || pPlayerHand.get(pCardChoice) instanceof Dwarf)
-//    {
-//      bChangeRace.setDisable(false);
-//      bChangeClass.setDisable(true);
-//      bGoldLevel.setDisable(true);
-//      bPlayMonster.setDisable(true);
-//      bSellTreasure.setDisable(true);
-//      bHelpfulLevel.setDisable(true);
-//      bHelpfulSell.setDisable(true);
-//    }
-//    //Makes change class clickable if the card is a class card. All others are gray.
-//    else if(pPlayerHand.get(pCardChoice) instanceof Cleric || pPlayerHand.get(pCardChoice) instanceof Warrior || pPlayerHand.get(pCardChoice) instanceof Wizard)
-//    {
-//      bChangeRace.setDisable(true);
-//      bChangeClass.setDisable(false);
-//      bGoldLevel.setDisable(true);
-//      bPlayMonster.setDisable(true);
-//      bSellTreasure.setDisable(true);
-//      bHelpfulLevel.setDisable(true);
-//      bHelpfulSell.setDisable(true);
-//    }
-//    //Makes helpful level and helpful sell clickable if the card chosen is a helpful card. All others are gray.
-//    else if (pPlayerHand.get(pCardChoice) instanceof Helpful)
-//    {
-//      bHelpfulLevel.setDisable(false);
-//      bHelpfulSell.setDisable(false);
-//      bChangeRace.setDisable(true);
-//      bChangeClass.setDisable(true);
-//      bGoldLevel.setDisable(true);
-//      bPlayMonster.setDisable(true);
-//      bSellTreasure.setDisable(true);
-//      bTreasureBonus.setDisable(true);
-//    }
-//    //If it isn't any of the above then the button is disabled
-//    else
-//    {
-//      bHelpfulLevel.setDisable(true);
-//      bHelpfulSell.setDisable(true);
-//      bChangeRace.setDisable(true);
-//      bChangeClass.setDisable(true);
-//      bGoldLevel.setDisable(true);
-//      bPlayMonster.setDisable(true);
-//      bSellTreasure.setDisable(true);
-//      bTreasureBonus.setDisable(true);
-//    }
-//  }
-//}
     cardGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
       @Override
       public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
@@ -399,45 +167,19 @@ public class Main extends Application {
         {
           // need to identify the toggle buttons with a card number.. enum goes somewhere.. to tired.
           //TODO make this work lol
-          // ButtonController.displayButtonsFor(cardGroup.getSelectedToggle());
+          ButtonController.displayButtonsFor(cardGroup.getSelectedToggle());
         }
         else
         {
-          // ButtonController.displayButtonsNone(null);
+          ButtonController.displayButtonsNone(null);
         }
         
       }
     });
   }
       
-
-
   private void initBoard() {
   //Creating and styling buttons
-    bChangeRace = new Button("Change Race");
-    bChangeClass = new Button("Change Class");
-    bHelpfulLevel = new Button("Use Helpful Card \nto Level Up");
-    bHelpfulSell = new Button("Use Helpful Card \nto Sell Treasure for 2x");
-    bSellTreasure = new Button("Sell Treasure");
-    bHalflingSell = new Button("Use halfling ability \nto Sell Treasure for 2x");
-    
-    bRules = new Button("Rules");
-    bRules.setId("bRules");
-    bDoorDeck = new Button();
-    bDoorDeck.setId("bDoorDeck");
-    
-    bGoldLevel = new Button("Pay 1000 Gold to Level Up");
-    bPlayMonster = new Button("Play Monster");
-    bTreasureBonus = new Button("Use a Treasure Card \nto Gain a Fight Bonus");
-    bTurning = new Button("Turning(Cleric)");
-    bFlight = new Button("Flight(Wizard)");
-    bBerserking = new Button("Berserking(Warrior)");
-    bCharm = new Button("Charm(Wizard)");
-    
-    bMonsterEncounter = new Button("Monster");
-    bMonsterEncounter.setId("bMonsterEncounter");
-    
-    bDiscard = new Button("Discard");
         
     //Creating and styling toggle buttons
     card1 = new ToggleButton("Card1");
