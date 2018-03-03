@@ -12,12 +12,12 @@ import model.Player;
 
 public class Main extends Application {
   
-  Deck doorCards;
-  Player player;
+  private Deck doorCards;
+  private Player player;
   private Stage primaryStage;
   private Scene primaryScene;
-  Game game;
-  SceneController sceneController;
+  private Game game;
+  private SceneController sceneController;
   
   // -----
   // -----
@@ -30,7 +30,7 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception
   {
-    //TODO this needs to loop .. 
+    //TODO this needs to loop or pass too someone who watches the state of game obj.
     initGame();
     this.primaryStage = primaryStage;
     initPrimaryScene();
@@ -57,19 +57,18 @@ public class Main extends Application {
     player.dealHand(doorCards, 8);
   }
   
+  //TODO make intializer for other scenes
+  //  private void initOtherScene() {};
+  
   // initializer for primary scene
   // 
   // Scene 1
-  private void initPrimaryScene() {
-    //Moved booleans into class 'Game' to track state of the game.
-    
-    
+  private void initPrimaryScene() {    
     //Setting up the layout
+    //TODO change SceneController to return a scene object.. instad of whats happening right now
     sceneController = new SceneController();
     primaryScene = new Scene(sceneController.scenePane, 1400, 700);
     primaryScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-    //TODO change SceneController to return a scene object.. instad of whats happening right now
-    
     primaryStage.setScene(primaryScene);
     primaryStage.setTitle("Munchkin First Draw");
     primaryStage.show();
@@ -78,12 +77,12 @@ public class Main extends Application {
     ButtonController.displayButtonsNone(null);
     ButtonController.checkDispayHalflingButton();
     
+    //TODO move togglebutton functionality to scene controller
     sceneController.cardGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
       @Override
       public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
       {
-        //TODO  refactor this out of Main.java to take directions from some kind of controller class that decides how buttons are displayed based on player state.
-        
+        //TODO  refactor this out of Main.java to take directions from some kind of controller class that decides how buttons are displayed based on player state
         // if togglebutton is selected, get the button selected
         if(sceneController.cardGroup.getSelectedToggle() != null)
         {
