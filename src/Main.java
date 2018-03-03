@@ -429,7 +429,8 @@ public class Main extends Application {
 		bSellTreasure.setOnAction(e-> playerHandHelper.sellTreasure(character, playerHand, cardChoice));
 		bDoorDeck.setOnAction(e->
 		{
-			playerHandHelper.drawDoor(doorCards, playerHand);
+			doorDeckNum = playerHandHelper.drawDoor(doorDeckNum, doorCards, playerHand); //Draws a card from the door deck and sets the current number of cards left in the door deck
+			
 			Draw1st = true;
 			
 			//Makes sure the player doesn't go over their card limit
@@ -888,7 +889,7 @@ public class Main extends Application {
 			bSellTreasure.setOnAction(e-> playerHandHelper.sellTreasure(character, playerHand, cardChoice));
 			bDoorDeck.setOnAction(e->
 			{
-				playerHandHelper.drawDoor(doorCards, playerHand);
+				doorDeckNum = playerHandHelper.drawDoor(doorDeckNum, doorCards, playerHand); //Draws a card and sets the number of door deck cards
 				
 				//Makes sure the player doesn't go over their card limit
 				if(playerHand.size() > maxCards)
@@ -1621,7 +1622,7 @@ public class Main extends Application {
 		
 		abilityLabel = new Label("	Class abilities are below. Abilities that aren't used\n	by your current class will be grayed out.");
 		abilityLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
-		abilityLabel.setMinSize(450, 80);
+		abilityLabel.setMinSize(450, 40);
 		
 		characterMonsterInfo = new Label("Player Level: " + character.getLevel()  + "\nPlayer Race: " + character.getRace() + "\nPlayer Class: " + character.getplayerClass() + "\nPlayer Gold: " + character.getGold() + "\nFight Bonus: " + character.getFightBonus() + "\nRun Bonus:" + character.getRunBonus());
 				

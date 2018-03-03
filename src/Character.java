@@ -52,7 +52,6 @@ public class Character
 		return runBonus;
 	}
 	
-	//setters
 	public void setFightBonus(int pFightBonus)
 	{
 		fightBonus = pFightBonus;

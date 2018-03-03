@@ -20,9 +20,13 @@ public class PlayerHandHelper
 		System.out.println("Treasure Sold"); //For testing only. Sees the button is working
 	}
 	
-	public void drawDoor(ArrayList pDoorCards, ArrayList pPlayerHand) //Cards are drawn and added to player hand. Removed from door deck.
+	public int drawDoor(int pDoorDeckNum, ArrayList pDoorCards, ArrayList pPlayerHand) //Cards are drawn and added to player hand. Removed from door deck.
 	{
-		System.out.println("Cards drawn"); //For testing only. Sees the button is working
+		pPlayerHand.add(pDoorCards.get(pDoorDeckNum)); //adds a card from the top of the door deck to player's hand
+		pDoorCards.remove(pDoorDeckNum); //removes the cards from the top of the door deck
+		pDoorDeckNum--; //deincrements the number of cards in the door deck
+		
+		return pDoorDeckNum;
 	}
 	
 	public void useTreasure(Character pcharacter, ArrayList pPlayerHand, int pCardChoice)
@@ -31,7 +35,7 @@ public class PlayerHandHelper
 	}
 	
 	//Used in Scene 4 and Scene 5. Discards the cards the player chose to discard. booleans will be true if they chose them.
-	public void discardAbility(Character pChar, Label pInstructionLabel, int pCardsSelected, ArrayList pPlayerHand, boolean pCard1Selected, boolean pCard2Selected, boolean pCard3Selected, boolean pCard4Selected, boolean pCard5Selected, boolean pCard6Selected)
+	public void discardAbility(Character pCharacter, Label pInstructionLabel, int pCardsSelected, ArrayList pPlayerHand, boolean pCard1Selected, boolean pCard2Selected, boolean pCard3Selected, boolean pCard4Selected, boolean pCard5Selected, boolean pCard6Selected)
 	{
 		//Will run it in a loop until the player has picked the correct number of cards
 		
@@ -42,9 +46,55 @@ public class PlayerHandHelper
 		else if(pCardsSelected <= 3 && pCardsSelected > 1)
 		{	
 			
-			//TODO Discard the cards they want and give the player +1 fight bonus for each card discarded
+			//Discard the cards they want and give the player +1 fight bonus for each card discarded	
 			
-			System.out.println("Discarded"); //For testing only. Sees the button is working
+			if(pCard1Selected == true)
+			{
+				pPlayerHand.set(0, "0"); //card 1 is replaced so the arraylist doesn't move yet
+				pCharacter.setFightBonus(pCharacter.getFightBonus() + 1); //sets the fight bonus to current + 1
+			}
+			
+			if(pCard2Selected == true)
+			{
+				pPlayerHand.set(1, "0"); //card 2 is replaced so the arraylist doesn't move yet
+				pCharacter.setFightBonus(pCharacter.getFightBonus() + 1); //sets the fight bonus to current + 1
+			}
+			
+			if(pCard3Selected == true)
+			{
+				pPlayerHand.set(2, "0"); //card 3 is replaced so the arraylist doesn't move yet
+				pCharacter.setFightBonus(pCharacter.getFightBonus() + 1); //sets the fight bonus to current + 1
+			}
+			
+			if(pCard4Selected == true)
+			{
+				pPlayerHand.set(3, "0"); //card 4 is replaced so the arraylist doesn't move yet
+				pCharacter.setFightBonus(pCharacter.getFightBonus() + 1); //sets the fight bonus to current + 1
+			}
+			
+			if(pCard5Selected == true)
+			{
+				pPlayerHand.set(4,"0"); //card 5 is replaced so the arraylist doesn't move yet
+				pCharacter.setFightBonus(pCharacter.getFightBonus() + 1); //sets the fight bonus to current + 1
+			}
+			
+			if(pCard6Selected == true)
+			{
+				pPlayerHand.set (5,"0"); //card 6 is replaced so the arraylist doesn't move yet
+				pCharacter.setFightBonus(pCharacter.getFightBonus() + 1); //sets the fight bonus to current + 1
+			}
+			
+			for(int s = 0; s <= pCardsSelected; s++) //Goes to remove all the "0"'s we put in the arraylist
+			{	
+				if(pPlayerHand.get(s) == "0")
+				{
+					pPlayerHand.remove(s);
+					s--; //To account for the array moving
+					pCardsSelected = pCardsSelected - 1; //To account for the array moving
+				}
+			}
+			
+			
 		}	
 		else if(pCardsSelected > 3)
 		{
@@ -66,9 +116,57 @@ public class PlayerHandHelper
 		}
 		else
 		{
-			//TODO Discard the cards they want from their hand
+			//Discard the cards they want and give the player +1 fight bonus for each card discarded
+			if(pCard1Selected == true)
+			{
+				pPlayerHand.set(0, "0"); //card 1 is replaced so the arraylist doesn't move yet
+			}
 			
-			System.out.println("Discarded"); //For testing only. Sees the button is working
+			if(pCard2Selected == true)
+			{
+				pPlayerHand.set(1, "0"); //card 2 is replaced so the arraylist doesn't move yet
+			}
+			
+			if(pCard3Selected == true)
+			{
+				pPlayerHand.set(2, "0"); //card 3 is replaced so the arraylist doesn't move yet
+			}
+			
+			if(pCard4Selected == true)
+			{
+				pPlayerHand.set(3, "0"); //card 4 is replaced so the arraylist doesn't move yet
+			}
+			
+			if(pCard5Selected == true)
+			{
+				pPlayerHand.set(4, "0"); //card 5 is replaced so the arraylist doesn't move yet
+			}
+			
+			if(pCard6Selected == true)
+			{
+				pPlayerHand.set(5, "0"); //card 6 is replaced so the arraylist doesn't move yet
+			}
+			
+			if(pCard7Selected == true)
+			{
+				pPlayerHand.set(6,"0"); //card 7 is replaced so the arraylist doesn't move yet
+			}
+			
+			if(pCard8Selected == true)
+			{
+				//pPlayerHand.set(7, "0"); //card 8 is replaced so the arraylist doesn't move yet
+			}
+			
+			for(int s = 0; s <= pCardsSelected; s++) //Goes to remove all the "0"'s we put in the arraylist
+			{	
+				if(pPlayerHand.get(s) == "0")
+				{
+					pPlayerHand.remove(s);
+					s--; //To account for the array moving
+					pCardsSelected = pCardsSelected - 1; //To account for the array moving
+				}
+			}
+
 		}
 	}
 }
