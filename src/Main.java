@@ -42,7 +42,6 @@ public class Main extends Application {
 	}
 	//Attributes
 	//Buttons
-  //TODO tell team about adding todo comments and how they show up on in eclipse
 	private Button bChangeRace;
 	private Button bChangeClass;
 	private Button bHelpfulLevel; //Button clicked to use helpful card to level up
@@ -323,97 +322,37 @@ public class Main extends Application {
 	{	
 		//Creating and styling buttons
 		bChangeRace = new Button("Change Race");
-		bChangeRace.setStyle("-fx-border-color: black; -fx-background-color: #def4de;" );
-		bChangeRace.setMinSize(200, 100);
 		bChangeClass = new Button("Change Class");
-		bChangeClass.setStyle("-fx-border-color: black; -fx-background-color: #def4de;" );
-		bChangeClass.setMinSize(200, 100);
-		
 		bHelpfulLevel = new Button("Use Helpful Card \nto Level Up");
-		bHelpfulLevel.setStyle("-fx-border-color: black; -fx-background-color: #def4de;" );
-		bHelpfulLevel.setMinSize(200, 100);
-		
 		bHelpfulSell = new Button("Use Helpful Card \nto Sell Treasure for 2x");
-		bHelpfulSell.setStyle("-fx-border-color: black; -fx-background-color: #def4de;" );
-		bHelpfulSell.setMinSize(200, 100);
-		
 		bSellTreasure = new Button("Sell Treasure");
-		bSellTreasure.setStyle("-fx-border-color: black; -fx-background-color: #def4de;" );
-		bSellTreasure.setMinSize(200, 100);
-		
 		bHalflingSell = new Button("Use halfling ability \nto Sell Treasure for 2x");
-		bHalflingSell.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bHalflingSell.setMinSize(200, 100);
 		
 		bRules = new Button("Rules");
-		bRules.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-shadow-highlight-color: white" );
-		bRules.setMinSize(150, 50);
-		
+		bRules.setId("bRules");
 		bDoorDeck = new Button();
-		bDoorDeck.setStyle("-fx-background-color: transparent; -fx-background-radius: 7;");
-		bDoorDeck.setMinSize(116, 77);
-		
-		bDoorDeck.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(7.0), BorderStroke.THICK)));
+		bDoorDeck.setId("bDoorDeck");
 		
 		bGoldLevel = new Button("Pay 1000 Gold to Level Up");
-		bGoldLevel.setStyle("-fx-border-color: black;  -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bGoldLevel.setMinSize(200, 100);
-		
 		bPlayMonster = new Button("Play Monster");
-		bPlayMonster.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bPlayMonster.setMinSize(200, 100);
-		
 		bTreasureBonus = new Button("Use a Treasure Card \nto Gain a Fight Bonus");
-		bTreasureBonus.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bTreasureBonus.setMinSize(200, 100);
-		
 		bTurning = new Button("Turning(Cleric)");
-		bTurning.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bTurning.setMinSize(200, 100);
-		
 		bFlight = new Button("Flight(Wizard)");
-		bFlight.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bFlight.setMinSize(200, 100);
-		
 		bBerserking = new Button("Berserking(Warrior)");
-		bBerserking.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bBerserking.setMinSize(200, 100);
-		
 		bCharm = new Button("Charm(Wizard)");
-		bCharm.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
-		bCharm.setMinSize(200, 100);
 		
 		bMonsterEncounter = new Button("Monster");
-		bMonsterEncounter.setMinSize(200, 275);		
+		bMonsterEncounter.setId("bMonsterEncounter");
 		
 		bDiscard = new Button("Discard");
-		bDiscard.setMinSize(200, 100);		
-		bDiscard.setStyle("-fx-border-color: black; -fx-background-color: #def4de; -fx-focus-color: white; ");
 				
 		//Creating and styling toggle buttons
 		card1 = new ToggleButton("Card1");
-		card1.setMinSize(160,235);
-		card1.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
-		
 		card2 = new ToggleButton("Card2");
-		card2.setMinSize(160,235);
-		card2.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
-		
 		card3 = new ToggleButton("Card3");
-		card3.setMinSize(160,235);
-		card3.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
-		
-		card4 = new ToggleButton("Card4");
-		card4.setMinSize(160,235);
-		card4.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
-		
-		card5 = new ToggleButton("Card5");
-		card5.setMinSize(160,235);
-		card5.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
-		
+		card4 = new ToggleButton("Card4");	
+		card5 = new ToggleButton("Card5");		
 		card6 = new ToggleButton("Card6");
-		card6.setMinSize(160,235);
-		card6.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		//Putting the toggle buttons into a group
 		cardGroup = new ToggleGroup();
@@ -427,52 +366,35 @@ public class Main extends Application {
 				
 		//Creating and styling labels
 		instructionLabel = new Label("	Please pick a card from your hand to proceed with one of the grayed out options below!");
-		instructionLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
-		instructionLabel.setMinSize(850, 40);
+		instructionLabel.setId("instructionLabel");
 		
 		//ImaginaryLabels to help with spacing
 		fakeLabel = new Label();
-		fakeLabel.setMinSize(50, 50);
 		fakeLabel2 = new Label();
-		fakeLabel2.setMinSize(50, 50);
 		fakeLabel3 = new Label();
-		fakeLabel3.setMinSize(50, 50);
 		fakeLabel4 = new Label();
-		fakeLabel4.setMinSize(30, 30);
 		fakeLabel5 = new Label();
-		fakeLabel5.setMinSize(85, 85);
+		fakeLabel5.setId("fakeLabel5");
 		//End of spacing labels
 		
 		actionLabel = new Label("	Please click on the door deck to draw and continue your adventure!");
-		actionLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
-		actionLabel.setMinSize(1012, 40);
+		actionLabel.setId("actionLabel");
 		
 		characterInfo = new Label("Player Level: 1 \nPlayer Race: Human\nPlayer Class: none\nPlayer Gold: 0");
 		
 		monsterActionLabel = new Label("	Please pick a treasure card from your hand to proceed with the\n	grayed out option below");
-		monsterActionLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
-		monsterActionLabel.setMinSize(400, 40);
+		monsterActionLabel.setId("monsterActionLabel");
 		
 		abilityLabel = new Label("	Class abilities are below. Abilities that aren't used\n	by your current class will be grayed out.");
-		abilityLabel.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #ffe5e5;");
-		abilityLabel.setMinSize(450, 40);
+		abilityLabel.setId("abilityLabel");
 		
 		characterMonsterInfo = new Label("Player Level: 1 \nPlayer Race: Human\nPlayer Class: none\nPlayer Gold: 0\nFight Bonus: 0\nRun Bonus: 0");
 				
 		//Making line to seperate buttons and cards
 		separator = new Line(0, 1, 1200, 1);
 				
-		//Loading in the images
-		try 
-		{
-		  String filePath = new File("").getAbsolutePath();
-		  System.out.println(filePath);
-			munchkinBoard = new FileInputStream(filePath + "/src/Images/Board.jpg");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		iBoard = new Image(munchkinBoard);
 		board = new ImageView(iBoard);
+		board.setId("munchkinBoard");
 	}
 	
 	@Override
@@ -503,6 +425,7 @@ public class Main extends Application {
 	{
 	
 		//Setting up the layout
+	  
 		setStyles();
 		
 		//Setting up the layout for Scene1
@@ -530,6 +453,7 @@ public class Main extends Application {
 		scene1Hbox = new HBox(board, scene1Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
 		scene1Pane = new Pane(scene1Hbox, bDoorDeck); //Made a pane so I can put the door deck button wherever I want
 		scene1Draw1 = new Scene(scene1Pane, 1400, 700);
+		scene1Draw1.getStylesheets().add(getClass().getResource("application/application.css").toExternalForm());
 		pPrimaryStage.setScene(scene1Draw1);
 		pPrimaryStage.setTitle("Munchkin First Draw");
 		pPrimaryStage.show();
@@ -670,6 +594,7 @@ public class Main extends Application {
 			scene2Hbox = new HBox(board, scene2Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
 			scene2Pane = new Pane(scene2Hbox, bMonsterEncounter); //Made a pane so I can put the door deck button wherever I want
 			scene2Monster = new Scene(scene2Pane, 1400, 700);
+			scene2Monster.getStylesheets().add(getClass().getResource("application/application.css").toExternalForm());
 			
 			//Disabling all buttons at the beginning of scene
 			bTreasureBonus.setDisable(true);
@@ -800,6 +725,7 @@ public class Main extends Application {
 			scene3Hbox = new HBox(board, scene3Grid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
 			scene3Pane = new Pane(scene3Hbox, bDoorDeck); //Made a pane so I can put the door deck button wherever I want
 			scene3Draw2 = new Scene(scene3Pane, 1400, 700);
+			scene3Draw2.getStylesheets().add(getClass().getResource("application/application.css").toExternalForm());
 			pPrimaryStage.setScene(scene3Draw2);
 			pPrimaryStage.setTitle("Munchkin Second Draw");
 			pPrimaryStage.show();

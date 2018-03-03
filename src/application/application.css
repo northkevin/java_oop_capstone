@@ -1,4 +1,97 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-#munchkinBoard{
-  
+.button
+{
+  -fx-border-color: black;
+  -fx-background-color: #def4de;
+  -fx-min-width: 200;
+  -fx-min-height: 100;
+  -fx-focus-color: white;
 }
+#bRules
+{
+  -fx-shadow-highlight-color: white;
+  -fx-min-width: 150;
+  -fx-min-height: 50;
+}
+#bDoorDeck
+{
+  -fx-border-style: solid;
+  -fx-border-radius: 7;
+  -fx-border-color: red;
+  -fx-background-radius: 7;
+  -fx-background-color: transparent;
+  -fx-min-width: 116;
+  -fx-min-height: 77;
+}
+
+#bMonsterEncounter
+{
+  -fx-min-width: 200;
+  -fx-min-height: 275;
+}
+
+.toggle-button{
+  -fx-border-radius: 10;
+  -fx-background-radius: 10;
+  -fx-min-width: 160;
+  -fx-min-height: 235;
+}
+
+.label{
+  -fx-min-width: 50;
+  -fx-min-height: 50;
+}
+#fakeLabel5{
+  -fx-min-width: 85;
+  -fx-min-height: 85;
+}
+#instructionLabel{
+  -fx-border-color: black;
+  -fx-border-radius: 10;
+  -fx-background-radius: 10;
+  -fx-background-color: #ffe5e5;
+  -fx-min-width: 850;
+  -fx-min-height: 40;
+}
+#actionLabel{
+  -fx-border-color: black;
+  -fx-border-radius: 10;
+  -fx-background-radius: 10;
+  -fx-background-color: #ffe5e5;
+  -fx-min-width: 1012;
+  -fx-min-height: 40;
+}
+#monsterActionLabel{
+  -fx-border-color: black;
+  -fx-border-radius: 10;
+  -fx-background-radius: 10;
+  -fx-background-color: #ffe5e5;
+  -fx-min-width: 400;
+  -fx-min-height: 40;
+}
+#abilityLabel{
+  -fx-border-color: black;
+  -fx-border-radius: 10;
+  -fx-background-radius: 10;
+  -fx-background-color: #ffe5e5;
+  -fx-min-width: 450;
+  -fx-min-height: 40;
+}
+
+#munchkinBoard{
+  -fx-image: url("../Images/Board.jpg");
+  -fx-image-borders: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  
