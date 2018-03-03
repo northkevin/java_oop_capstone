@@ -896,7 +896,8 @@ public class Main extends Application {
 		try 
 		{
 		  String filePath = new File("").getAbsolutePath();
-			munchkinBoard = new FileInputStream(filePath + "../Images/Board.jpg");
+		  System.out.println(filePath);
+			munchkinBoard = new FileInputStream(filePath + "/src/Images/Board.jpg");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
