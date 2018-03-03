@@ -59,7 +59,7 @@ public class CurseHelper
 				else //curseNumber is 8-10
 				{
 					//TODO call loseLevel
-					levelLoss = " " + ((DoorDeck) pPlayerHand.get(f)).getName() + " has drawn your strength and pushed you down a level!";
+					levelLoss = " " + ((DoorDeck) pPlayerHand.get(f)).getName() + " has drawn your strength and pushed you down some levels!";
 				}
 				
 				pPlayerHand.remove(f); //Removes the curse card from the player's hand

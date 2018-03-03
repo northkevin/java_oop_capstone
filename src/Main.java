@@ -64,6 +64,7 @@ public class Main extends Application {
 	private ToggleButton card6; //For the dwarf or if too many cards are drawn
 	private ToggleButton card7; //If the dwarf draws too many cards
 	private ToggleButton card8; //When the player first starts the game
+	private ToggleButton card9; //When the player first starts the game then draws a card with 8 cards
 	
 	//Toggle Group
 	private ToggleGroup cardGroup;
@@ -142,6 +143,8 @@ public class Main extends Application {
 	private int maxCards = 5; //Keeps track of how many cards the player can have. 5 normally, 6 for dwarves
 	private boolean turningUsed, berserkingUsed, charmUsed, flightUsed = false; //Keeps track of if the player has used their class ability or not
 	private boolean monsterDrawn = false; //Sees if a monster has been drawn 
+	
+	Object monsterCard = new Object(); //Going to hold the monster card that is drawn in scene 1, if it is drawn.
 	
 	@Override
 	public void start(Stage primaryStage) 
@@ -277,6 +280,8 @@ public class Main extends Application {
 		{
 			scene1Draw1 = new Scene(scene1Pane, 1600, 700);
 		}
+		
+		setCardText(); //Sets the text of a card on a button associated with that card
 		
 		pPrimaryStage.setScene(scene1Draw1);
 		pPrimaryStage.setTitle("Munchkin First Draw");
@@ -436,12 +441,16 @@ public class Main extends Application {
 			//Makes sure the player doesn't go over their card limit
 			if(playerHand.get(playerHand.size()-1) instanceof Monster)
 			{
+				monsterCard = playerHand.get((playerHand.size()-1)); //copies the monster to a variable
+				playerHand.remove(playerHand.size()-1); //Removes that monster card from the player's hand
+				
 				monsterDrawn = true;
 			}
 			else
 			{
 				monsterDrawn = false;
 			}
+			
 			
 			if(playerHand.size() > maxCards)
 			{
@@ -517,31 +526,31 @@ public class Main extends Application {
 			//Puts however many cards the player is holding into an hbox
 			if(playerHand.size() == 0)
 			{
-				cardsHbox = new HBox(10, characterInfo);
+				cardsHbox = new HBox(10, characterMonsterInfo);
 			}
 			else if(playerHand.size() == 1)
 			{
-				cardsHbox = new HBox(10, characterInfo, card1);
+				cardsHbox = new HBox(10, characterMonsterInfo, card1);
 			}
 			else if(playerHand.size() == 2)
 			{
-				cardsHbox = new HBox(10, characterInfo, card1, card2);
+				cardsHbox = new HBox(10, characterMonsterInfo, card1, card2);
 			}
 			else if(playerHand.size() == 3)
 			{
-				cardsHbox = new HBox(10, characterInfo, card1, card2, card3);
+				cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3);
 			}
 			else if(playerHand.size() == 4)
 			{
-				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4);
+				cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4);
 			}
 			else if(playerHand.size() == 5)
 			{	
-				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
+				cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
 			}
 			else
 			{
-				cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
+				cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5, card6); //Puts all the cards in one hbox
 			}
 			
 			scene2Grid.add(cardsHbox, 1, 12, 8, 1);
@@ -550,6 +559,8 @@ public class Main extends Application {
 			scene2Pane = new Pane(scene2Hbox, bMonsterEncounter); //Made a pane so I can put the door deck button wherever I want
 			scene2Monster = new Scene(scene2Pane, 1400, 700);
 			
+			setCardText(); //Sets the text of a card on a button associated with that card
+			
 			//Disabling all buttons at the beginning of scene
 			bTreasureBonus.setDisable(true);
 			bTurning.setDisable(true);
@@ -557,6 +568,8 @@ public class Main extends Application {
 			bBerserking.setDisable(true);
 			bCharm.setDisable(true);;
 			
+			
+			bMonsterEncounter.setText("Name " + ((DoorDeck) monsterCard).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
 						
 			//Enables the class abilities if the player is that class
 			if(character.getplayerClass() == "Cleric")
@@ -786,6 +799,8 @@ public class Main extends Application {
 			pPrimaryStage.setScene(scene3Draw2);
 			pPrimaryStage.setTitle("Munchkin Second Draw");
 			pPrimaryStage.show();
+			
+			setCardText(); //Sets the text of a card on a button associated with that card
 				
 			//Disabling all buttons at the beginning
 			bChangeRace.setDisable(true);
@@ -905,6 +920,7 @@ public class Main extends Application {
 		}
 	}
 	
+	
 	public void abilityScene(Stage pPrimaryStage) 
 	{
 		//No cards are selected by default in every scene
@@ -980,6 +996,8 @@ public class Main extends Application {
 		pPrimaryStage.setScene(scene4DiscardAbility);
 		pPrimaryStage.setTitle("Munchkin Discard for Class Ability");
 		pPrimaryStage.show();
+		
+		setCardText(); //Sets the text of a card on a button associated with that card
 		
 		//Togglebutton actions for Scene 4
 		cardsSelected = 0; //There are automatically no cards selected
@@ -1154,9 +1172,13 @@ public class Main extends Application {
 		{
 			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7); //Puts all the cards in one hbox
 		}
-		else //If it's the beginning of the game and the player has 8 cards to discard
+		else if(playerHand.size() == 8)//If it's the beginning of the game and the player has 8 cards to discard
 		{
 			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7, card8);
+		}
+		else
+		{
+			cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5, card6, card7, card8, card9);
 		}
 		
 		scene5Grid.add(characterInfo, 1, 7);
@@ -1172,6 +1194,10 @@ public class Main extends Application {
 			//savedline
 			scene5Discard = new Scene(scene5Hbox, 1400, 700);
 		}
+		else if(playerHand.size() == 9) //After the player starts the game and has 8 cards, then draws 1 more
+		{
+			scene5Discard = new Scene(scene5Hbox, 1600, 700);
+		}
 		else //When the player starts the game they start with 8 cards
 		{
 			scene5Discard = new Scene(scene5Hbox, 1500, 700);
@@ -1180,6 +1206,8 @@ public class Main extends Application {
 		pPrimaryStage.setScene(scene5Discard);
 		pPrimaryStage.setTitle("Munchkin Discard Cards");
 		pPrimaryStage.show();
+		
+		setCardText(); //Sets the text of a card on a button associated with that card
 		
 		//Togglebutton actions for Scene 4
 		cardsSelected = 0; //There are automatically no cards selected
@@ -1470,6 +1498,172 @@ public class Main extends Application {
 		System.out.println("Rules"); //For testing only! Checks to see if the button is working.
 	}
 	
+	//Seeing how many cards the player has then setting text on buttons associated with those cards
+	public void setCardText()
+	{
+		if(playerHand.size() >=1)
+		{
+			card1.setText(((DoorDeck) playerHand.get(0)).getName() + " Card");
+			
+			if(playerHand.get(0) instanceof Monster)
+			{
+				card1.setText("Monster \n" + ((DoorDeck) playerHand.get(0)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(0) instanceof Helpful)
+			{
+				card1.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(0)).getName() );
+			}
+			else if(playerHand.get(0) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+
+		if(playerHand.size() >=2)
+		{
+			card2.setText(((DoorDeck) playerHand.get(1)).getName() + " Card");
+			
+			if(playerHand.get(1) instanceof Monster)
+			{
+				card2.setText("Monster\n" + ((DoorDeck) playerHand.get(1)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(1) instanceof Helpful)
+			{
+				card2.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(1)).getName() );
+			}
+			else if(playerHand.get(1) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+		
+		if(playerHand.size() >=3)
+		{
+			card3.setText(((DoorDeck) playerHand.get(2)).getName() + " Card");
+			
+			if(playerHand.get(2) instanceof Monster)
+			{
+				card3.setText("Monster\n" + ((DoorDeck) playerHand.get(2)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(2) instanceof Helpful)
+			{
+				card3.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(2)).getName() );
+			}
+			else if(playerHand.get(2) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+		
+		if(playerHand.size() >=4)
+		{
+			card4.setText(((DoorDeck) playerHand.get(3)).getName() + " Card");
+			
+			if(playerHand.get(3) instanceof Monster)
+			{
+				card4.setText("Monster \n" + ((DoorDeck) playerHand.get(3)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(3) instanceof Helpful)
+			{
+				card4.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(3)).getName() );
+			}
+			else if(playerHand.get(3) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+		
+		if(playerHand.size() >=5)
+		{
+			card5.setText(((DoorDeck) playerHand.get(4)).getName() + " Card");
+			
+			if(playerHand.get(4) instanceof Monster)
+			{
+				card5.setText("Monster \n" + ((DoorDeck) playerHand.get(4)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(4) instanceof Helpful)
+			{
+				card5.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(4)).getName() );
+			}
+			else if(playerHand.get(4) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+		
+		if(playerHand.size() >=6)
+		{
+			card6.setText(((DoorDeck) playerHand.get(5)).getName() + " Card");
+			
+			if(playerHand.get(5) instanceof Monster)
+			{
+				card6.setText("Monster \n" + ((DoorDeck) playerHand.get(5)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(5) instanceof Helpful)
+			{
+				card6.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(5)).getName() );
+			}
+			else if(playerHand.get(5) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+		
+		if(playerHand.size() >=7)
+		{
+			card7.setText(((DoorDeck) playerHand.get(6)).getName() + " Card");
+			
+			if(playerHand.get(6) instanceof Monster)
+			{
+				card7.setText("Monster \n" + ((DoorDeck) playerHand.get(6)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(6) instanceof Helpful)
+			{
+				card7.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(6)).getName() );
+			}
+			else if(playerHand.get(6) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+		
+		if(playerHand.size() >=8)
+		{
+			card8.setText(((DoorDeck) playerHand.get(7)).getName() + "Card");
+			
+			if(playerHand.get(7) instanceof Monster)
+			{
+				card8.setText("Monster \n" + ((DoorDeck) playerHand.get(7)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(7) instanceof Helpful)
+			{
+				card8.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(7)).getName() );
+			}
+			else if(playerHand.get(7) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+		
+		if(playerHand.size() >=9)
+		{
+			card9.setText(((DoorDeck) playerHand.get(8)).getName() + " Card");
+			
+			if(playerHand.get(8) instanceof Monster)
+			{
+				card9.setText("Monster \n" + ((DoorDeck) playerHand.get(8)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			}
+			else if(playerHand.get(8) instanceof Helpful)
+			{
+				card9.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(8)).getName() );
+			}
+			else if(playerHand.get(8) instanceof Treasure)
+			{
+				//TODO set card1 treasure text here
+			}
+		}
+	}
+	
 	//Creating all buttons, togglebuttons, labels, etc and setting their styles
 	public void setStyles()
 	{	
@@ -1578,6 +1772,10 @@ public class Main extends Application {
 		card8 = new ToggleButton("Card8");
 		card8.setMinSize(130, 205);
 		card8.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
+		
+		card9 = new ToggleButton("Card9");
+		card9.setMinSize(130, 205);
+		card9.setStyle("-fx-border-radius: 10; -fx-background-radius: 10");
 		
 		//Putting the toggle buttons into a group
 		cardGroup = new ToggleGroup();

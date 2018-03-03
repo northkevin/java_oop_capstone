@@ -84,7 +84,7 @@ public class PlayerHandHelper
 				pCharacter.setFightBonus(pCharacter.getFightBonus() + 1); //sets the fight bonus to current + 1
 			}
 			
-			for(int s = 0; s <= pCardsSelected; s++) //Goes to remove all the "0"'s we put in the arraylist
+			for(int s = 0; s < pCardsSelected; s++) //Goes to remove all the "0"'s we put in the arraylist
 			{	
 				if(pPlayerHand.get(s) == "0")
 				{
@@ -157,7 +157,7 @@ public class PlayerHandHelper
 				//pPlayerHand.set(7, "0"); //card 8 is replaced so the arraylist doesn't move yet
 			}
 			
-			for(int s = 0; s <= pCardsSelected; s++) //Goes to remove all the "0"'s we put in the arraylist
+			for(int s = 0; s < pCardsSelected; s++) //Goes to remove all the "0"'s we put in the arraylist
 			{	
 				if(pPlayerHand.get(s) == "0")
 				{
