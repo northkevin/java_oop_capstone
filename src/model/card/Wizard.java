@@ -1,6 +1,9 @@
+package model.card;
 import java.util.ArrayList;
 
-public class Wizard extends DoorDeck
+import model.Character;
+
+public class Wizard extends Card
 {
 
 	Wizard()

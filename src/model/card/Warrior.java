@@ -1,6 +1,9 @@
+package model.card;
 import java.util.ArrayList;
 
-public class Warrior extends DoorDeck
+import model.Character;
+
+public class Warrior extends Card
 {
 
 	Warrior()

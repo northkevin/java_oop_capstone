@@ -1,8 +1,10 @@
+package model.card;
 import java.util.ArrayList;
 
 import javafx.scene.control.Button;
+import model.Character;
 
-public class Halfling extends DoorDeck
+public class Halfling extends Card
 {
 
 	Halfling() //Constructor

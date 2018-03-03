@@ -1,5 +1,6 @@
+package model.card;
 
-public class Curse extends DoorDeck
+public class Curse extends Card
 {
 
 	Curse() //Constructor

@@ -1,5 +1,6 @@
+package model.card;
 
-public class Monster extends DoorDeck
+public class Monster extends Card
 {
 
 	Monster() //Constructor

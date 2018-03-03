@@ -1,6 +1,9 @@
+package model.card;
 import java.util.ArrayList;
 
-public class Helpful extends DoorDeck
+import model.Character;
+
+public class Helpful extends Card
 {
 	
 	Helpful()//Constructor

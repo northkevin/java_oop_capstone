@@ -1,5 +1,6 @@
+package model.card;
 
-public class Dwarf extends DoorDeck
+public class Dwarf extends Card
 {
 
 	Dwarf() //Constructor

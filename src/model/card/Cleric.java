@@ -1,6 +1,10 @@
+package model.card;
 import java.util.ArrayList;
 
-public class Cleric extends DoorDeck{
+import model.Character;
+
+
+public class Cleric extends Card{
 
 	Cleric() //Constructor
 	{

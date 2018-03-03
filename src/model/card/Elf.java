@@ -1,5 +1,6 @@
+package model.card;
 
-public class Elf extends DoorDeck
+public class Elf extends Card
 {
 
 	Elf() //Constructor
