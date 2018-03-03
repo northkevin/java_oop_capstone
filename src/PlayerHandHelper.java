@@ -2,39 +2,28 @@ import java.util.ArrayList;
 
 public class PlayerHandHelper 
 {
-
 	PlayerHandHelper()
 	{
 		
 	}
 	
-	void drawDoor(ArrayList<DoorCards> doorCards)
+	public void playMonster(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Plays a monster from the players hand
 	{
-		//Code
+		System.out.println("Monster Played"); //For testing only. Sees the button is working
 	}
 	
-	public void displayHand(ArrayList<PlayerHand> pPlayerHand)
+	public void sellTreasure(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sells treasure, removed from hand, adds to gold
 	{
-		
+		System.out.println("Treasure Sold"); //For testing only. Sees the button is working
 	}
-
-	public void sellTreasure(Character pChar, ArrayList<PlayerHand> pPlayerHand) 
+	
+	public void drawDoor(ArrayList pDoorCards, ArrayList pPlayerHand) //Cards are drawn and added to player hand. Removed from door deck.
 	{
-		//Displays Stage 2 Scene 3 
-		//Sees which treasure was clicked
-		//Sells that treasure for regular or double if a halfling for first time
-		//Gets rid of treasure card and gives player gold
-		//Displays Stage 3 Scene 6
+		System.out.println("Cards drawn"); //For testing only. Sees the button is working
 	}
-
-	public void useTreasure(Character pChar, ArrayList<PlayerHand> pPlayerHand) 
+	
+	public void useTreasure(Character pcharacter, ArrayList pPlayerHand, int pCardChoice)
 	{
-		//Displays Stage 2 Scene 6
-		//Sees which card was clicked
-		//Uses that treasure to gain a fight bonus
-		//Get rid of card
-		//Displays Stage 3 Scene 9
+		System.out.println("Treasure Used"); //For testing only. Sees the button is working
 	}
-
-
 }

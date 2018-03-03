@@ -2,44 +2,40 @@ import java.util.ArrayList;
 
 public class CharacterHelper 
 {
-
+	
+	
 	CharacterHelper()
 	{
 		
 	}
 	
-	public void changeRace(Character pChar, ArrayList<PlayerHand> pPlayerHand)
+	public void changeRace(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sets the player's race
 	{
-		//Displays Stage 2 Scene 4
-		//Sees which card is chosen
-		//Sets race
-		//Also display stage 3 scene 7 after the change has been made
-		
+		System.out.println("Race Changed"); //For testing only. Sees the button is working
 	}
-
-	public void changeClass(Character pChar, ArrayList<PlayerHand> pPlayerHand)
-	{
-		// Displays Stage 2 Scene 5
-		//Sees which card is chosen
-		//Sets class
-		//Also displays stage 3 scene 8
-		
-	}
-
-	public void combat(int pFightBonus, Character pChar, Monster pMon)	
-	{
-		// TODO Auto-generated method stub
-	}
-
-	public void buyLevel(Character pChar)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-
-
 	
-
+	public void changeClass(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sets the player's class
+	{
+		System.out.println("Class Changed"); //For testing only. Sees the button is working
+	}
 	
+	public void buyLevel(Character pCharacte, int pCardChoice) //Sets the player's level after they buy a level(have to have enough money)
+	{
+		System.out.println("Leveled Up"); //For testing only. Sees the button is working
+	}
+	
+	public void combat(Character pCharacter, ArrayList pPlayerHand, MonsterHelper pMonsterHelper) //Compares the fight bonus + player level to monster level. Also calls run if they fail.
+	{
+		System.out.println("Monster fought"); //For testing only. Sees the button is working
+		/***Pseudo*: If they lose then below will be called.
+		*Pseudo*: Use pCharacter.getFightBonus();**/
+		
+		run(pCharacter);
+	}
+	
+	public void run(Character pCharacter) //Rolls the dice and adds it to the player's bonus to run. 5 and above is success. For elf 4 and above.
+	{
+		System.out.println("Run away"); //For testing only. Sees the button is working
+		/***Pseudo*: Use pCharacter.getRunBonus**/
+	}
 }

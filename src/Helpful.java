@@ -1,28 +1,40 @@
 import java.util.ArrayList;
 
-public class Helpful 
+public class Helpful extends DoorDeck
 {
-
-	Helpful()
+	
+	Helpful()//Constructor
 	{
+		super();
+		constructCard();
+	}
+
+	@Override
+	public void constructCard() 
+	{
+		setName(randomHelpfulName());
 		
 	}
 	
-	public void helpLevelUp(ArrayList<PlayerHand> pPlayerHand, Character pChar)
+	public String randomHelpfulName() //generates a random name from among some helpful items
 	{
-		//Levels the player up by one and discards the helpful card
-		//Displays Stage 2 Scene 10
-		//Sees which card is chosen
-		//Levels up character and discards card
-		//Displays Stage 3 Scene 18
+		String[] helpfulNames = {"Ring of Miodan", "Healing Circlet of Emiah", "Athene's Unholy Grail", "Mipha's Grace", "Ghal Maraz", "Cloak of Petrification", "Crown of Bretonnia", "The Book of Grudges", "Scroll of the Divine" };
+		int index = (int) (Math.random() * helpfulNames.length);
+		String name = helpfulNames[index];
+		 
+		return(name);
+		
+	}
+	
+	public void sellDoubleVal(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
+	{
+		System.out.println("Sell double value"); //For testing purposes only. Sees if button works.
+	}
+	
+	public void helpLevelUp(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
+	{
+		System.out.println("Helpful level up"); //For testing purposes only. Sees if button works.
 	}
 
-	public void sellDoubleVal(ArrayList<PlayerHand> pChar, Character pPlayerHand) 
-	{
-		//Displays Stage 2 Scene 9
-		//Sees which card is chosen
-		//Sells that treasure card and discards helpful card
-		//Gives character the gold
-		//Displays Stage 3 Scene 6
-	}
+
 }
