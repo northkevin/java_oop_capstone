@@ -1,6 +1,6 @@
 # CSCV-335 Munchkin Game
 
-[Munchkin Game]: https://i.imgur.com/0UR3CHW.png
+[Munchkin Game](https://i.imgur.com/0UR3CHW.png)
 
 
 # Getting Started
