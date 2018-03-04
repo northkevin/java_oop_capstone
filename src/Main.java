@@ -440,9 +440,43 @@ public class Main extends Application {
 		
 		//Button actions for Scene 1
 		bRules.setOnAction(e-> Rules());
-		bChangeRace.setOnAction(e-> characterHelper.changeRace(character, playerHand, cardChoice));
-		bChangeClass.setOnAction(e-> characterHelper.changeClass(character, playerHand, cardChoice));
-		bHelpfulLevel.setOnAction(e-> helpful.helpLevelUp());
+		bChangeRace.setOnAction(e-> characterHelper.changeRace(abilityLabel, character, playerHand, cardChoice));
+		bChangeClass.setOnAction(e-> characterHelper.changeClass(abilityLabel, character, playerHand, cardChoice));
+		
+		bHelpfulLevel.setOnAction(e-> 
+		{
+		  if(cardGroup.getSelectedToggle() != null)
+		  {
+		    actionLabel.setText("Congratulations, you've gone up a level! /n  you used a helpful card!");
+		    character.levelUp();
+		    bHelpfulLevel.setDisable(true);
+		    if(card1 == cardGroup.getSelectedToggle()) 
+		    {
+		      playerHand.remove(0);
+		    }
+		    if(card2 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(1);
+        }
+		    if(card3 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(2);
+        }
+		    if(card4 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(3);
+        }
+		    if(card5 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(4);
+        }
+		    if(card6 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(5);
+        }
+		  }
+		  
+		});
 		bHelpfulSell.setOnAction(e-> 
 		{
 			worthDouble = true; //Makes the next treasure card worth double
@@ -1434,11 +1468,12 @@ public class Main extends Application {
 			doorDeckCards.add(DoorDeckFactory.createCard(6)); //Adds class clerics to the door deck
 		}
 		
-		doorDeckCards.forEach(card ->{
-		  if(card instanceof Helpful) {
-		    ((Helpful) card).addChar(character);
-		  }
-		});
+		//TODO implement observer pattern if cards become more apart of the game engine logic.
+    //		doorDeckCards.forEach(card ->{
+    //		  if(card instanceof Helpful) {
+    //		    ((Helpful) card).addChar(character);
+    //		  }
+    //		});
 						
 		Collections.shuffle(doorDeckCards); //Shuffles all the cards that were added to the array list
 		doorDeckNum = 99; //Says there are 100 cards in the door deck(Since we start with 0)
