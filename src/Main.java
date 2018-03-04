@@ -128,7 +128,7 @@ public class Main extends Application {
 	
 	//Attributes
 	private int doorDeckNum = 0; //Keeps track of how many cards are in the door deck
-	private ArrayList doorCards, playerHand;
+	private ArrayList doorCards, playerHand, treasureDeck;
 	private int cardChoice = -1; //Associates the card number with the the toggle button clicked. -1 is not an index of an arraylist
 	private boolean Draw1st = false; //Keeps track if it is the first draw or second draw
 	private int cardsSelected = 0; //Keeps track of how many cards are selected in Scene 4
@@ -154,6 +154,9 @@ public class Main extends Application {
 		doorCards = new ArrayList();
 		doorCards = createDoorDeck(); //First thing the program does is make the door deck
 		playerHand = dealPlayerHand(doorCards); //Second thing the program does is deal the player 8 cards
+		
+		treasureDeck = new ArrayList();
+		treasureDeck = createTreasureDeck(); //Treasure deck of 100 cards is create
 		
 		//Create all class objects
 		characterHelper = new CharacterHelper();
@@ -1347,6 +1350,17 @@ public class Main extends Application {
 		
 	}
 	
+	public ArrayList createTreasureDeck()
+	{
+		ArrayList treasureDeckCards = new ArrayList();
+		
+		for(int j = 0; j < 99; j++) //Will put 100 treasure cards in a deck of treasure
+		{
+			treasureDeckCards.add(new Treasure());
+		}
+		
+		return treasureDeckCards;
+	}
 	
 	public ArrayList createDoorDeck()
 	{

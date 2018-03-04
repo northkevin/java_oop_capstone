@@ -49,4 +49,5 @@ public class Treasure
 		
 		treasureName = name;
 	}
+	
 }
