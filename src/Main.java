@@ -180,9 +180,23 @@ public class Main extends Application {
 		
 	}
 	
+	public void deadScene(Stage pPrimaryStage)
+	{
+		Label Dead = new Label("You have died! Try again next time!");
+		Dead.setMinSize(1400, 500);
+		
+		Scene DeadScene = new Scene(Dead, 1400, 700);
+		pPrimaryStage.setScene(DeadScene);
+	}
 	
 	public void startScene(Stage pPrimaryStage)
 	{
+		
+		if(character.getIsDead() == true) //Checks if character has died
+		{
+			deadScene(pPrimaryStage);
+		}
+		
 		monsterDrawn = false;
 		worthDouble = false; //Since this is the start of the scene no cards are worthDouble
 		
