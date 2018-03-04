@@ -142,7 +142,7 @@ public class Main extends Application {
 	private boolean card8Selected = false; //Keeps track of if card 8 is selected in Scenes 4 and 5
 	
 	private int maxCards = 5; //Keeps track of how many cards the player can have. 5 normally, 6 for dwarves
-	private boolean turningUsed, berserkingUsed, charmUsed, flightUsed = false; //Keeps track of if the player has used their class ability or not
+	private boolean charmUsed, flightUsed = false; //Keeps track of if the player has used their class ability or not
 	private boolean monsterDrawn = false; //Sees if a monster has been drawn 
 	
 	Object monsterCard = new Object(); //Going to hold the monster card that is drawn in scene 1, if it is drawn.
@@ -178,8 +178,6 @@ public class Main extends Application {
 		monsterDrawn = false;
 		
 		//Since it is not a monster encounter no class abilities have been used so they will be set to false
-		turningUsed = false;
-		berserkingUsed = false;
 		flightUsed = false;
 		charmUsed = false;
 		
@@ -575,14 +573,14 @@ public class Main extends Application {
 			//Enables the class abilities if the player is that class
 			if(character.getplayerClass() == "Cleric")
 			{
-				if(turningUsed == false) //Does not enable if turning has already been used
+				if(cleric.isActive() == false) //Does not enable if turning has already been used
 				{	
 					bTurning.setDisable(false);
 				}	
 			}
 			else if(character.getplayerClass() == "Warrior")
 			{
-				if(berserkingUsed == false) //Does not enable if berserking has already been used
+				if(warrior.isActive() == false) //Does not enable if berserking has already been used
 				{	
 					bBerserking.setDisable(false);
 				}	
@@ -697,14 +695,12 @@ public class Main extends Application {
 			bTurning.setOnAction(e-> 
 			{
 				cleric.turning(character, playerHand);
-				turningUsed = true; //Sets the ability to disabled after the character has used it
 				abilityScene(pPrimaryStage);
 			});
 			
 			bBerserking.setOnAction(e-> 
 			{
 				warrior.berserking(character, playerHand);
-				berserkingUsed = true;
 				abilityScene(pPrimaryStage);
 				
 			});
