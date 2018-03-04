@@ -189,12 +189,26 @@ public class Main extends Application {
 		pPrimaryStage.setScene(DeadScene);
 	}
 	
+	public void winScene(Stage pPrimaryStage)
+	{
+		Label Alive = new Label(" You have won the game! Hurray!");
+		Alive.setMinSize(1400, 500);
+		
+		Scene WinScene = new Scene(Alive, 1400, 700);
+		pPrimaryStage.setScene(WinScene);
+	}
+	
 	public void startScene(Stage pPrimaryStage)
 	{
 		
 		if(character.getIsDead() == true) //Checks if character has died
 		{
 			deadScene(pPrimaryStage);
+		}
+		
+		if(character.getLevel() == 10)
+		{
+			winScene(pPrimaryStage);
 		}
 		
 		monsterDrawn = false;
@@ -527,6 +541,11 @@ public class Main extends Application {
 		
 		//Setting up the layout
 		setStyles();
+		
+		if(character.getLevel() == 10)
+		{
+			winScene(pPrimaryStage);
+		}
 		
 		worthDouble = false; //Player changed the scene so next treasure card is no longer worth double
 				
