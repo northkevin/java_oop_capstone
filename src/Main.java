@@ -440,9 +440,43 @@ public class Main extends Application {
 		
 		//Button actions for Scene 1
 		bRules.setOnAction(e-> Rules());
-		bChangeRace.setOnAction(e-> characterHelper.changeRace(actionLabel, character,  playerHand, cardChoice));
-		bChangeClass.setOnAction(e-> characterHelper.changeClass(actionLabel, character, playerHand, cardChoice));
-		bHelpfulLevel.setOnAction(e-> helpful.helpLevelUp(character, playerHand, cardChoice));
+		bChangeRace.setOnAction(e-> characterHelper.changeRace(abilityLabel, character, playerHand, cardChoice));
+		bChangeClass.setOnAction(e-> characterHelper.changeClass(abilityLabel, character, playerHand, cardChoice));
+		
+		bHelpfulLevel.setOnAction(e-> 
+		{
+		  if(cardGroup.getSelectedToggle() != null)
+		  {
+		    actionLabel.setText("Congratulations, you've gone up a level! /n  you used a helpful card!");
+		    character.levelUp();
+		    bHelpfulLevel.setDisable(true);
+		    if(card1 == cardGroup.getSelectedToggle()) 
+		    {
+		      playerHand.remove(0);
+		    }
+		    if(card2 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(1);
+        }
+		    if(card3 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(2);
+        }
+		    if(card4 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(3);
+        }
+		    if(card5 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(4);
+        }
+		    if(card6 == cardGroup.getSelectedToggle()) 
+        {
+		      playerHand.remove(5);
+        }
+		  }
+		  
+		});
 		bHelpfulSell.setOnAction(e-> 
 		{
 			worthDouble = true; //Makes the next treasure card worth double
@@ -1387,9 +1421,9 @@ public class Main extends Application {
 		
 	}
 	
-	public ArrayList createTreasureDeck()
+	public ArrayList<Treasure> createTreasureDeck()
 	{
-		ArrayList treasureDeckCards = new ArrayList();
+		ArrayList<Treasure> treasureDeckCards = new ArrayList<Treasure>();
 		
 		for(int j = 0; j < 99; j++) //Will put 100 treasure cards in a deck of treasure
 		{
@@ -1399,10 +1433,10 @@ public class Main extends Application {
 		return treasureDeckCards;
 	}
 	
-	public ArrayList createDoorDeck()
+	public ArrayList<DoorDeck> createDoorDeck()
 	{
 		//Creating the doorCard arrayList
-		ArrayList doorDeckCards = new ArrayList();
+		ArrayList<DoorDeck> doorDeckCards = new ArrayList<DoorDeck>();
 				
 		for(int i = 0; i < 30; i++) //30% monster cards
 		{	
@@ -1433,6 +1467,13 @@ public class Main extends Application {
 			doorDeckCards.add(DoorDeckFactory.createCard(5)); //Adds class wizards to the door deck
 			doorDeckCards.add(DoorDeckFactory.createCard(6)); //Adds class clerics to the door deck
 		}
+		
+		//TODO implement observer pattern if cards become more apart of the game engine logic.
+    //		doorDeckCards.forEach(card ->{
+    //		  if(card instanceof Helpful) {
+    //		    ((Helpful) card).addChar(character);
+    //		  }
+    //		});
 						
 		Collections.shuffle(doorDeckCards); //Shuffles all the cards that were added to the array list
 		doorDeckNum = 99; //Says there are 100 cards in the door deck(Since we start with 0)
