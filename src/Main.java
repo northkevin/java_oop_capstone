@@ -145,7 +145,9 @@ public class Main extends Application {
 	private boolean charmUsed, flightUsed = false; //Keeps track of if the player has used their class ability or not
 	private boolean monsterDrawn = false; //Sees if a monster has been drawn 
 	
-	Object monsterCard = new Object(); //Going to hold the monster card that is drawn in scene 1, if it is drawn.
+	private boolean worthDouble = false; //Keeps track of if the next treasure card sold is worth double
+	
+	Monster monsterCard = new Monster(); //Going to hold the monster card that is drawn in scene 1, if it is drawn.
 	
 	@Override
 	public void start(Stage primaryStage) 
@@ -179,6 +181,7 @@ public class Main extends Application {
 	public void startScene(Stage pPrimaryStage)
 	{
 		monsterDrawn = false;
+		worthDouble = false; //Since this is the start of the scene no cards are worthDouble
 		
 		//Since it is not a monster encounter no class abilities have been used so they will be set to false
 		flightUsed = false;
@@ -431,9 +434,20 @@ public class Main extends Application {
 		bChangeRace.setOnAction(e-> characterHelper.changeRace(character, playerHand, cardChoice));
 		bChangeClass.setOnAction(e-> characterHelper.changeClass(character, playerHand, cardChoice));
 		bHelpfulLevel.setOnAction(e-> helpful.helpLevelUp(character, playerHand, cardChoice));
-		bHelpfulSell.setOnAction(e-> helpful.sellDoubleVal(character, playerHand, cardChoice));
+		bHelpfulSell.setOnAction(e-> 
+		{
+			worthDouble = true; //Makes the next treasure card worth double
+			actionLabel.setText("  The next treasure card you sell on this scene will be sold for double since/n  you used a helpful card!");
+		}); 
+		
 		bHalflingSell.setOnAction(e-> halfling.sellDouble(bHalflingSell, playerHand, character, cardChoice));
-		bSellTreasure.setOnAction(e-> playerHandHelper.sellTreasure(character, playerHand, cardChoice));
+		bSellTreasure.setOnAction(e-> 
+		{
+			playerHandHelper.sellTreasure(worthDouble, character, playerHand, cardChoice);
+			actionLabel.setText("  You have sold some treasure!");
+			worthDouble = false; //If it was true it was already sold for double
+		});
+		
 		bDoorDeck.setOnAction(e->
 		{
 			doorDeckNum = playerHandHelper.drawDoor(doorDeckNum, doorCards, playerHand); //Draws a card from the door deck and sets the current number of cards left in the door deck
@@ -443,7 +457,7 @@ public class Main extends Application {
 			//Makes sure the player doesn't go over their card limit
 			if(playerHand.get(playerHand.size()-1) instanceof Monster)
 			{
-				monsterCard = playerHand.get((playerHand.size()-1)); //copies the monster to a variable
+				monsterCard = (Monster) playerHand.get((playerHand.size()-1)); //copies the monster to a variable
 				playerHand.remove(playerHand.size()-1); //Removes that monster card from the player's hand
 				
 				monsterDrawn = true;
@@ -473,6 +487,8 @@ public class Main extends Application {
 		
 		//Setting up the layout
 		setStyles();
+		
+		worthDouble = false; //Player changed the scene so next treasure card is no longer worth double
 				
 		//No cards are selected by default in every scene
 		cardsSelected = 0;
@@ -571,7 +587,7 @@ public class Main extends Application {
 			bCharm.setDisable(true);;
 			
 			
-			bMonsterEncounter.setText("Name " + ((DoorDeck) monsterCard).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+			bMonsterEncounter.setText("Monster \n" + ((DoorDeck) monsterCard).getName() + "\nLevel: " + monsterCard.getLevel() + "\nVulnerability: " + "\nTreasure: " + monsterCard.getGood());
 						
 			//Enables the class abilities if the player is that class
 			if(character.getplayerClass() == "Cleric")
@@ -899,9 +915,15 @@ public class Main extends Application {
 			bChangeRace.setOnAction(e-> characterHelper.changeRace(character, playerHand, cardChoice));
 			bChangeClass.setOnAction(e-> characterHelper.changeClass(character, playerHand, cardChoice));
 			bGoldLevel.setOnAction(e-> characterHelper.buyLevel(character, cardChoice));
-			bPlayMonster.setOnAction(e-> playerHandHelper.playMonster(character, playerHand, cardChoice));
+			bPlayMonster.setOnAction(e-> 
+			{
+				monsterCard = (Monster) playerHandHelper.playMonster(character, playerHand, cardChoice);
+				monsterDrawn = true;
+				switchScene(pPrimaryStage);
+			});
+			
 			bHalflingSell.setOnAction(e-> halfling.sellDouble(bHalflingSell, playerHand, character, cardChoice));
-			bSellTreasure.setOnAction(e-> playerHandHelper.sellTreasure(character, playerHand, cardChoice));
+			bSellTreasure.setOnAction(e-> playerHandHelper.sellTreasure(worthDouble, character, playerHand, cardChoice));
 			bDoorDeck.setOnAction(e->
 			{
 				doorDeckNum = playerHandHelper.drawDoor(doorDeckNum, doorCards, playerHand); //Draws a card and sets the number of door deck cards
@@ -1139,6 +1161,11 @@ public class Main extends Application {
 		scene5Grid.setVgap(10);
 		scene5Grid.add(instructionLabel, 1, 0, 7, 1);
 		scene5Grid.add(bRules, 8, 0);
+		scene5Grid.add(actionLabel, 1, 10, 8, 1);
+		
+		//Checks the player's hand for curse cards
+		actionLabel.setText("  You are now discarding cards!");
+		curseHelper.checkCurse(actionLabel, curse, playerHand); //Have to do this after actionlabel and before an hBox is made
 		
 		if(playerHand.size() == 0)
 		{
@@ -1518,7 +1545,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(0) instanceof Monster)
 			{
-				card1.setText("Monster \n" + ((DoorDeck) playerHand.get(0)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card1.setText("Monster \n" + ((DoorDeck) playerHand.get(0)).getName() + "\nLevel: " + ((Monster) playerHand.get(0)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(0)).getGood());
 			}
 			else if(playerHand.get(0) instanceof Helpful)
 			{
@@ -1536,7 +1563,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(1) instanceof Monster)
 			{
-				card2.setText("Monster\n" + ((DoorDeck) playerHand.get(1)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card2.setText("Monster\n" + ((DoorDeck) playerHand.get(1)).getName() + "\nLevel: " + ((Monster) playerHand.get(1)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(1)).getGood());
 			}
 			else if(playerHand.get(1) instanceof Helpful)
 			{
@@ -1554,7 +1581,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(2) instanceof Monster)
 			{
-				card3.setText("Monster\n" + ((DoorDeck) playerHand.get(2)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card3.setText("Monster\n" + ((DoorDeck) playerHand.get(2)).getName() + "\nLevel: " + ((Monster) playerHand.get(2)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(2)).getGood());
 			}
 			else if(playerHand.get(2) instanceof Helpful)
 			{
@@ -1572,7 +1599,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(3) instanceof Monster)
 			{
-				card4.setText("Monster \n" + ((DoorDeck) playerHand.get(3)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card4.setText("Monster \n" + ((DoorDeck) playerHand.get(3)).getName() + "\nLevel: " + ((Monster) playerHand.get(3)).getLevel() + "\nVulnerability: " +"\nTreasure: " + ((Monster) playerHand.get(3)).getGood());
 			}
 			else if(playerHand.get(3) instanceof Helpful)
 			{
@@ -1590,7 +1617,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(4) instanceof Monster)
 			{
-				card5.setText("Monster \n" + ((DoorDeck) playerHand.get(4)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card5.setText("Monster \n" + ((DoorDeck) playerHand.get(4)).getName() + "\nLevel: " + ((Monster) playerHand.get(4)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(4)).getGood());
 			}
 			else if(playerHand.get(4) instanceof Helpful)
 			{
@@ -1608,7 +1635,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(5) instanceof Monster)
 			{
-				card6.setText("Monster \n" + ((DoorDeck) playerHand.get(5)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card6.setText("Monster \n" + ((DoorDeck) playerHand.get(5)).getName() + "\nLevel: " + ((Monster) playerHand.get(5)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(5)).getGood());
 			}
 			else if(playerHand.get(5) instanceof Helpful)
 			{
@@ -1626,7 +1653,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(6) instanceof Monster)
 			{
-				card7.setText("Monster \n" + ((DoorDeck) playerHand.get(6)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card7.setText("Monster \n" + ((DoorDeck) playerHand.get(6)).getName() + "\nLevel: " + ((Monster) playerHand.get(6)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(6)).getGood());
 			}
 			else if(playerHand.get(6) instanceof Helpful)
 			{
@@ -1644,7 +1671,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(7) instanceof Monster)
 			{
-				card8.setText("Monster \n" + ((DoorDeck) playerHand.get(7)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card8.setText("Monster \n" + ((DoorDeck) playerHand.get(7)).getName() + "\nLevel: " + ((Monster) playerHand.get(7)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(7)).getGood());
 			}
 			else if(playerHand.get(7) instanceof Helpful)
 			{
@@ -1662,7 +1689,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(8) instanceof Monster)
 			{
-				card9.setText("Monster \n" + ((DoorDeck) playerHand.get(8)).getName() + "\nLevel: " + "\nVulnerability: " + "\nTreasure: ");
+				card9.setText("Monster \n" + ((DoorDeck) playerHand.get(8)).getName() + "\nLevel: " + ((Monster) playerHand.get(8)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(8)).getGood());
 			}
 			else if(playerHand.get(8) instanceof Helpful)
 			{

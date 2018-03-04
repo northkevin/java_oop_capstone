@@ -22,6 +22,11 @@ public class Monster extends DoorDeck
 	public void constructCard()
 	{
 		setName(randomMonsterName());
+		setLevel();
+		setVulnerability();
+		setGood();
+		setBad();
+		
 	}
 	
 	public String randomMonsterName() //Will generate a monster name from a list of sp00ky names
@@ -65,6 +70,6 @@ public class Monster extends DoorDeck
 		mBad = (badSelect.nextInt(11) + 1);
 	}
 		
-		public int getBad() {return mBad;}
+	public int getBad() {return mBad;}
 	 
 }

@@ -24,7 +24,7 @@ public class Halfling extends DoorDeck
 		pbHalflingSell.setDisable(true); //Since the player has already used their ability
 		
 		goldWorth = ((Treasure) pPlayerHand.get(pCardChoice)).getValue(); //Retrieves the gold value of the treasure
-		pCharacter.setGold(pCharacter.getGold() + goldWorth); //Adds the gold to the player's current
+		pCharacter.setGold(pCharacter.getGold() + goldWorth*2); //Adds the twice the gold to the player's current
 		
 		pPlayerHand.remove(pCardChoice); //Removes the treasure card from the player's hand
 	}

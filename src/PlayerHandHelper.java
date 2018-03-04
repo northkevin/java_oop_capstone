@@ -10,14 +10,33 @@ public class PlayerHandHelper
 		
 	}
 	
-	public void playMonster(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Plays a monster from the players hand
+	public Monster playMonster(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Plays a monster from the players hand
 	{
-		System.out.println("Monster Played"); //For testing only. Sees the button is working
+		Monster monCard;
+		
+		monCard = (Monster) pPlayerHand.get(pCardChoice); //Copies the monster from the player hand to an object
+		pPlayerHand.remove(pCardChoice); //Removes the monster card from the player's hand
+		
+		return monCard;
 	}
 	
-	public void sellTreasure(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sells treasure, removed from hand, adds to gold
+	public void sellTreasure(boolean pWorthDouble, Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sells treasure, removed from hand, adds to gold
 	{
-		System.out.println("Treasure Sold"); //For testing only. Sees the button is working
+		int goldValue;
+		
+		goldValue = ((Treasure) pPlayerHand.get(pCardChoice)).getValue(); //Gets the value of the card selected
+		
+		if(pWorthDouble = false)
+		{
+			pCharacter.setGold(pCharacter.getGold() + goldValue); //Adds the value of the card to the player's current gold
+		}
+		else
+		{
+			pCharacter.setGold(pCharacter.getGold() + goldValue*2); //A helpful card was used to make the next treasure card worth double
+		}
+		
+		pPlayerHand.remove(pCardChoice); //Removes the treasure card from the player's hand
+		
 	}
 	
 	public int drawDoor(int pDoorDeckNum, ArrayList pDoorCards, ArrayList pPlayerHand) //Cards are drawn and added to player hand. Removed from door deck.
@@ -27,6 +46,12 @@ public class PlayerHandHelper
 		pDoorDeckNum--; //deincrements the number of cards in the door deck
 		
 		return pDoorDeckNum;
+	}
+	
+	public void drawTreasure(ArrayList pTreasureCards, ArrayList pPlayerHand)
+	{
+		pPlayerHand.add(pTreasureCards.get(pTreasureCards.size()-1)); //Adds the treasure card on the top of the deck to the player's hand
+		pTreasureCards.remove(pTreasureCards.size()-1); //Remove the treasure card from the treasure deck
 	}
 	
 	public void useTreasure(Character pcharacter, ArrayList pPlayerHand, int pCardChoice)
