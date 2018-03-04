@@ -1593,7 +1593,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(0) instanceof Monster)
 			{
-				card1.setText("Monster \n" + ((DoorDeck) playerHand.get(0)).getName() + "\nLevel: " + ((Monster) playerHand.get(0)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(0)).getGood());
+				card1.setText("Monster \n" + ((DoorDeck) playerHand.get(0)).getName() + "\nLevel: " + ((Monster) playerHand.get(0)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(0)).getVulnerability()) + "\nTreasure: " + ((Monster) playerHand.get(0)).getGood());
 			}
 			else if(playerHand.get(0) instanceof Helpful)
 			{
@@ -1611,7 +1611,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(1) instanceof Monster)
 			{
-				card2.setText("Monster\n" + ((DoorDeck) playerHand.get(1)).getName() + "\nLevel: " + ((Monster) playerHand.get(1)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(1)).getGood());
+				card2.setText("Monster\n" + ((DoorDeck) playerHand.get(1)).getName() + "\nLevel: " + ((Monster) playerHand.get(1)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(1)).getVulnerability())+ "\nTreasure: " + ((Monster) playerHand.get(1)).getGood());
 			}
 			else if(playerHand.get(1) instanceof Helpful)
 			{
@@ -1629,7 +1629,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(2) instanceof Monster)
 			{
-				card3.setText("Monster\n" + ((DoorDeck) playerHand.get(2)).getName() + "\nLevel: " + ((Monster) playerHand.get(2)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(2)).getGood());
+				card3.setText("Monster\n" + ((DoorDeck) playerHand.get(2)).getName() + "\nLevel: " + ((Monster) playerHand.get(2)).getLevel() + "\nVulnerability: " +(((Monster) playerHand.get(2)).getVulnerability())+ "\nTreasure: " + ((Monster) playerHand.get(2)).getGood());
 			}
 			else if(playerHand.get(2) instanceof Helpful)
 			{
@@ -1647,7 +1647,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(3) instanceof Monster)
 			{
-				card4.setText("Monster \n" + ((DoorDeck) playerHand.get(3)).getName() + "\nLevel: " + ((Monster) playerHand.get(3)).getLevel() + "\nVulnerability: " +"\nTreasure: " + ((Monster) playerHand.get(3)).getGood());
+				card4.setText("Monster \n" + ((DoorDeck) playerHand.get(3)).getName() + "\nLevel: " + ((Monster) playerHand.get(3)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(3)).getVulnerability())+"\nTreasure: " + ((Monster) playerHand.get(3)).getGood());
 			}
 			else if(playerHand.get(3) instanceof Helpful)
 			{
@@ -1665,7 +1665,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(4) instanceof Monster)
 			{
-				card5.setText("Monster \n" + ((DoorDeck) playerHand.get(4)).getName() + "\nLevel: " + ((Monster) playerHand.get(4)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(4)).getGood());
+				card5.setText("Monster \n" + ((DoorDeck) playerHand.get(4)).getName() + "\nLevel: " + ((Monster) playerHand.get(4)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(4)).getVulnerability()) + "\nTreasure: " + ((Monster) playerHand.get(4)).getGood());
 			}
 			else if(playerHand.get(4) instanceof Helpful)
 			{
@@ -1683,7 +1683,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(5) instanceof Monster)
 			{
-				card6.setText("Monster \n" + ((DoorDeck) playerHand.get(5)).getName() + "\nLevel: " + ((Monster) playerHand.get(5)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(5)).getGood());
+				card6.setText("Monster \n" + ((DoorDeck) playerHand.get(5)).getName() + "\nLevel: " + ((Monster) playerHand.get(5)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(5)).getVulnerability())+ "\nTreasure: " + ((Monster) playerHand.get(5)).getGood());
 			}
 			else if(playerHand.get(5) instanceof Helpful)
 			{
@@ -1701,7 +1701,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(6) instanceof Monster)
 			{
-				card7.setText("Monster \n" + ((DoorDeck) playerHand.get(6)).getName() + "\nLevel: " + ((Monster) playerHand.get(6)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(6)).getGood());
+				card7.setText("Monster \n" + ((DoorDeck) playerHand.get(6)).getName() + "\nLevel: " + ((Monster) playerHand.get(6)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(6)).getVulnerability()) + "\nTreasure: " + ((Monster) playerHand.get(6)).getGood());
 			}
 			else if(playerHand.get(6) instanceof Helpful)
 			{
@@ -1719,7 +1719,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(7) instanceof Monster)
 			{
-				card8.setText("Monster \n" + ((DoorDeck) playerHand.get(7)).getName() + "\nLevel: " + ((Monster) playerHand.get(7)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(7)).getGood());
+				card8.setText("Monster \n" + ((DoorDeck) playerHand.get(7)).getName() + "\nLevel: " + ((Monster) playerHand.get(7)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(7)).getVulnerability())+ "\nTreasure: " + ((Monster) playerHand.get(7)).getGood());
 			}
 			else if(playerHand.get(7) instanceof Helpful)
 			{
@@ -1737,7 +1737,7 @@ public class Main extends Application {
 			
 			if(playerHand.get(8) instanceof Monster)
 			{
-				card9.setText("Monster \n" + ((DoorDeck) playerHand.get(8)).getName() + "\nLevel: " + ((Monster) playerHand.get(8)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(8)).getGood());
+				card9.setText("Monster \n" + ((DoorDeck) playerHand.get(8)).getName() + "\nLevel: " + ((Monster) playerHand.get(8)).getLevel() + "\nVulnerability: " + (((Monster) playerHand.get(8)).getVulnerability())+ "\nTreasure: " + ((Monster) playerHand.get(8)).getGood());
 			}
 			else if(playerHand.get(8) instanceof Helpful)
 			{
