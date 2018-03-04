@@ -140,7 +140,7 @@ public class PlayerHandHelper
 		}
 		else if((pPlayerHand.size() - pCardsSelected) > pMaxCards) //Does this if the amount of cards they would have after the discard is less than their allowed max
 		{
-			System.out.println("You would still have too many cards. Please click more to discard! You can only have " + pMaxCards + " cards!");
+			pInstructionLabel. setText("You would still have too many cards. Please click more to discard! You can only have " + pMaxCards + " cards!");
 		}
 		else
 		{
