@@ -5,7 +5,7 @@ public class Character
 	String playerClass;
 	int level = 0;
 	boolean isDead = false;
-	int gold = 0;
+	private int gold;
 	int fightBonus = 0;
 	int runBonus = 0;
 	
@@ -14,6 +14,7 @@ public class Character
 	{
 		race = "Human";
 		playerClass = "Cleric";
+		this.gold = 0;
 	}
 	
 	//getters
@@ -39,7 +40,7 @@ public class Character
 	
 	public int getGold()
 	{
-		return gold;
+		return this.gold;
 	}
 	
 	public int getFightBonus()
@@ -80,7 +81,7 @@ public class Character
 	
 	public void setGold(int pGold)
 	{
-		gold = pGold;
+		this.gold = pGold;
 	}
 	
 	public void setIsDead(boolean pIsDead)
