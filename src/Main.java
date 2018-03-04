@@ -78,6 +78,7 @@ public class Main extends Application {
 	private Label abilityLabel; //Says stuff about class abilities
 	private Label monsterActionLabel; //Says stuff about using a treasure card in a monster encounter
 	private Label characterMonsterInfo; //Like character info but with fight bonus and run bonus included
+	private Label tempLabel;
 	
 	//Making the pictures
 	private FileInputStream munchkinBoard;
@@ -146,6 +147,8 @@ public class Main extends Application {
 	private boolean monsterDrawn = false; //Sees if a monster has been drawn 
 	
 	private boolean worthDouble = false; //Keeps track of if the next treasure card sold is worth double
+	
+	private boolean monsterFought = false; //Keeps track of if the monster has been defeated or not
 	
 	Monster monsterCard = new Monster(); //Going to hold the monster card that is drawn in scene 1, if it is drawn.
 	
@@ -231,6 +234,12 @@ public class Main extends Application {
 		scene1Grid.add(separator, 1,10,8,1);
 		scene1Grid.add(actionLabel, 1, 15, 8, 1);
 		
+		//Not part of the layout
+		if(monsterFought == true)
+		{
+			actionLabel.setText(tempLabel.getText()); //Sets the text of the label to what was recieved from combat previously
+		}
+			
 		//Have to do this line before making hboxes but after action label. Not part of layout.
 		curseHelper.checkCurse(actionLabel, curse, playerHand); //Checks if a curse card was drawn, applies it, then removes it from the deck
 		
@@ -480,7 +489,8 @@ public class Main extends Application {
 		});
 	
 	}
-
+	
+		
 	//Sets the stage to either a monster encounter or to their second draw depending on if a monster was drawn in scene 1 or not
 	public void switchScene(Stage pPrimaryStage)
 	{
@@ -740,7 +750,10 @@ public class Main extends Application {
 			});
 			bMonsterEncounter.setOnAction(e-> 
 			{
-				characterHelper.combat(character, playerHand, monsterHelper);
+				tempLabel = new Label(); //Going to store the label
+				
+				tempLabel = characterHelper.combat(actionLabel, character, playerHand, monsterCard);
+				monsterFought = true;
 				startScene(pPrimaryStage);
 			});
 					
@@ -751,6 +764,7 @@ public class Main extends Application {
 		//The last card drawn is not a monster card so the player gets to draw again!
 		else
 		{
+			monsterFought = false; //A monster has not been fought
 			
 			setStyles();
 			Draw1st = false; //It is the second draw
@@ -912,9 +926,9 @@ public class Main extends Application {
 					
 			//Button actions for Scene 3
 			bRules.setOnAction(e-> Rules());
-			bChangeRace.setOnAction(e-> characterHelper.changeRace(character, playerHand, cardChoice));
-			bChangeClass.setOnAction(e-> characterHelper.changeClass(character, playerHand, cardChoice));
-			bGoldLevel.setOnAction(e-> characterHelper.buyLevel(character, cardChoice));
+			bChangeRace.setOnAction(e-> characterHelper.changeRace(actionLabel, character, playerHand, cardChoice));
+			bChangeClass.setOnAction(e-> characterHelper.changeClass(actionLabel, character, playerHand, cardChoice));
+			bGoldLevel.setOnAction(e-> characterHelper.buyLevel(actionLabel, character, cardChoice));
 			bPlayMonster.setOnAction(e-> 
 			{
 				monsterCard = (Monster) playerHandHelper.playMonster(character, playerHand, cardChoice);

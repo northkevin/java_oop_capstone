@@ -1,123 +1,119 @@
 import java.util.ArrayList;
 
+import javafx.scene.control.Label;
+
 public class CharacterHelper 
 {
 	int characterLevel;
+	boolean runTwice = false;
 
 	CharacterHelper()
 	{
 
 	}
 
-	public void changeRace(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
+	public void changeRace(Label pActionLabel, Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
 	{
 		//Sets the player's race
-		String raceType = pPlayerHand.get(pCardChoice).toString();
-		pCharacter.setRace(raceType);
-
-		String newRace = pCharacter.getRace();
-		System.out.println("Race Changed"); //For testing only. Sees the button is working
-		System.out.println("You changed your race to a " + newRace.toString());
+		pCharacter.setRace(((DoorDeck) pPlayerHand.get(pCardChoice)).getName());
+		
+		pActionLabel.setText("  You changed your race to a " + pCharacter.getRace() + " Please click on the door deck in red to the left to draw!");
 	}
 
-	public void changeClass(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sets the player's class
+	public void changeClass(Label pActionLabel, Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sets the player's class
 	{
-		String classType = pPlayerHand.get(pCardChoice).toString();
-
-		pCharacter.setPlayerClass(classType);
-		String newClass = pCharacter.getplayerClass();
-
-		System.out.println("Class Changed"); //For testing only. Sees the button is working
-		System.out.println("You changed your class to a " + newClass.toString());
+		pCharacter.setPlayerClass(((DoorDeck) pPlayerHand.get(pCardChoice)).getName());
+		
+		pActionLabel.setText("  You changed your class to a " + pCharacter.getClass() + " Please click on the door deck in red to the left to draw!" );
 
 	}
 
-	public void buyLevel(Character pCharacter, int pCardChoice) 
+	public void buyLevel(Label pActionLabel, Character pCharacter, int pCardChoice) 
 	{
 		double levelPrice = 1000;
-		//Sets the player's level after they buy a level (have to have enough money)
-		if(pCharacter.getGold() > levelPrice) {
-			System.out.println("You leveled up.");
+		
+		
+		if(pCharacter.getGold() > levelPrice) 
+		{
 			characterLevel = pCharacter.getLevel() + 1;
 			pCharacter.setLevel(characterLevel);
+			pActionLabel.setText("	You leveled up!");
+			
+			pCharacter.setGold(pCharacter.getGold() - 1000); //Subtracts the 1000 gold from the player's gold
 		}		
-		else {
-			System.out.println("You leveled up.");
+		else 
+		{
+			pActionLabel.setText("	You do not have enough money to buy a level! You need 1000 gold to level up!\n  Please click on the door deck in red to the left to draw!");
 		}
 	}
 
-	public void combat(Character pCharacter, ArrayList pPlayerHand, MonsterHelper pMonsterHelper) //Compares the fight bonus + player level to monster level. Also calls run if they fail.
+	public Label combat(Label pActionLabel, Character pCharacter, ArrayList pPlayerHand, Monster pMonster) //Compares the fight bonus + player level to monster level. Also calls run if they fail.
 	{
 		int combatStrength = pCharacter.getLevel() + pCharacter.getFightBonus();
 
-		if (combatStrength > pMonsterHelper.getMonsterLevel()) {
-			System.out.println("Monster fought"); //For testing only. Sees the button is working
-			System.out.println("You Win");
-			characterLevel = pCharacter.getLevel() + 1;
+		if (combatStrength > ((Monster) pMonster).getLevel()) 
+		{
+			pActionLabel.setText("	You Won your fight with the monster! You get a level and get" + pMonster.getGood() + " pieces of treasure");
+			characterLevel = pCharacter.getLevel() + 1; //Adds a level to the character's level since they won
 			pCharacter.setLevel(characterLevel);
+			
+			//TODO collect's treasure from monster here
+			
 		}
-		else {
-			System.out.println("Monster fought");
-			System.out.println("Run Away!");
-			run(pCharacter);
+		else 
+		{
+			pActionLabel = run(pActionLabel, pCharacter, pMonster);
 		}
-		//Compares the fight bonus + player level to monster level. Also calls run if they fail.
-		/***Pseudo*: If they lose then below will be called.
-		 *Pseudo*: Use pCharacter.getFightBonus();**/
+		
+		return pActionLabel;
 	}
 
-	public void run(Character pCharacter) //Rolls the dice and adds it to the player's bonus to run. 5 and above is success. For elf 4 and above.
+	public Label run(Label pActionLabel, Character pCharacter, Monster pMonster) //Rolls the dice and adds it to the player's bonus to run. 5 and above is success. For elf 4 and above.
 	{
 		// Roll the dice
-		int rollResult = (int) (Math.random()* (6-1)+1); 	// (highest = lowest) + lowest
+		int rollResult = (int) (Math.random()* (6-1)+1); 	// (highest - lowest) + lowest
 
-		// Monster type
-		MonsterHelper monsterType = new MonsterHelper();
-
-		while(pCharacter.getRace() != null) {
+		rollResult = rollResult + pCharacter.getRunBonus(); //Adds the run bonus so the roll will be higher and it is easier to run away
+		
+		// Elf wins if they roll greater than 4
+		if(pCharacter.getRace() == "Elf") 
+		{
+			if(rollResult >= 4) 
+			{ 
+				// success; player run
+				pActionLabel.setText("	You lost your fight with the monster, but you managed to successfully run away!");
 			
-			// Elf wins if they roll greater than 4
-			if(pCharacter.getRace() == "Elf") {
-				if(rollResult > 4) { 
-					// success; player run
-					System.out.println("You Win");
-//					monsterType.collectTreasure();
-				
-				}
-				else {
-					// loss
-//					monsterType.collectLoss();
-				
-				}
 			}
-			else
+			else 
 			{
-				if(rollResult >= 5) {
-					// success; player run
-					System.out.println("Success, You Win!");
-					characterLevel = pCharacter.getLevel() + 1;
-
-					// treasure bonus?
-					pCharacter.setRunBonus(characterLevel);
-					pCharacter.setLevel(pCharacter.getRunBonus());
-					// collect level and treasure
-					// move up a level
-					// collect how many  points?
+				pActionLabel.setText("You have lost your fight with a monster and failed to escape!");
+				//TODO collectloss
+			
+			}
+		}
+		else
+		{
+			if(rollResult >= 5) 
+			{
+				pActionLabel.setText("	You lost your fight with the monster, but you managed to successfully run away!");
+	
+			}
+			else 
+			{
+				// Halfling gets to run again if they lose
+				if(pCharacter.getRace() == "Halfling")
+				{
+					run(pActionLabel, pCharacter, pMonster); //Calls run again for halfling
 				}
-				else {
-					// Halfling gets to run again if they lose
-					if(pCharacter.getRace() == "Halfling"){
-						System.out.println("You lost but you may run again. \nRun away!");
-						return;
-					}
-					else
-					{
-						// loss
-//						monsterType.collectLoss();
-
-					}
+				else
+				{
+					//Collect loss
 				}
 			}
-			/***Pseudo*: Use pCharacter.getRunBonus**/
 		}
-	}
+		
+		return pActionLabel;
+}	
+	
+
+}
