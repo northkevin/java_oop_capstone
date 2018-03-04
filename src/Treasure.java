@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Treasure 
+public class Treasure extends DoorDeck
 {
 	String treasureName;
 	private int value;
@@ -49,5 +49,11 @@ public class Treasure
 		
 		treasureName = name;
 	}
-	
+
+  @Override
+  public void constructCard()
+  {
+    // TODO Auto-generated method stub
+    
+  }
 }

@@ -5,6 +5,10 @@ import javafx.stage.Stage;
 
 public class PlayerHandHelper 
 {
+  private int soldAmount;
+  private Boolean worthDouble;
+  private int iteratorIndex;
+  
 	PlayerHandHelper()
 	{
 		
@@ -13,11 +17,40 @@ public class PlayerHandHelper
 	public void playMonster(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Plays a monster from the players hand
 	{
 		System.out.println("Monster Played"); //For testing only. Sees the button is working
+		pPlayerHand.add(DoorDeckFactory.createCard(10));
 	}
 	
-	public void sellTreasure(Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sells treasure, removed from hand, adds to gold
+	public void sellTreasure(Character pCharacter, ArrayList<DoorDeck> pPlayerHand, int pCardChoice) //Sells treasure, removed from hand, adds to gold
 	{
-		System.out.println("Treasure Sold"); //For testing only. Sees the button is working
+	  this.soldAmount = 0;
+	  this.worthDouble = false;
+	  this.iteratorIndex = 0;
+	  
+	  pPlayerHand.forEach(card ->
+	  {
+	    if((card instanceof Treasure)&&(pCardChoice == iteratorIndex))
+	    {
+	      this.soldAmount += ((Treasure) card).getValue();
+	    }
+	    if((card instanceof Helpful)&&(pCardChoice == iteratorIndex))
+	    {
+	      worthDouble = true;
+	    }
+	    iteratorIndex++;
+    });
+	  
+	  // for now just putting default values for testing.
+	  soldAmount=50;
+	  if(worthDouble){soldAmount+=soldAmount;}
+	  
+	  System.out.println("Current Gold: " + pCharacter.getGold());
+	  pCharacter.setGold(pCharacter.getGold() + soldAmount);
+	  System.out.println("Gold After sale: " + pCharacter.getGold());
+	  
+	  // this method like a mini program right now.. so being safe and setting all vars back to 0/false
+	  this.soldAmount = 0;
+    this.worthDouble = false;
+    this.iteratorIndex = 0;
 	}
 	
 	public int drawDoor(int pDoorDeckNum, ArrayList pDoorCards, ArrayList pPlayerHand) //Cards are drawn and added to player hand. Removed from door deck.

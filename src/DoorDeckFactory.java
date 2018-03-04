@@ -41,6 +41,9 @@ public class DoorDeckFactory
 		case 9:
 			card = new Dwarf();
 		break;
+		case 10:
+		  card = new Treasure();
+		  break;
 		}
 		
 		
