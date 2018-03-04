@@ -13,7 +13,7 @@ public class Character
 	Character() //Constructor
 	{
 		race = "Human";
-		playerClass = "Cleric";
+		playerClass = "None";
 	}
 	
 	//getters

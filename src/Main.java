@@ -241,7 +241,7 @@ public class Main extends Application {
 		}
 			
 		//Have to do this line before making hboxes but after action label. Not part of layout.
-		curseHelper.checkCurse(actionLabel, curse, playerHand); //Checks if a curse card was drawn, applies it, then removes it from the deck
+		curseHelper.checkCurse(character, actionLabel, curse, playerHand); //Checks if a curse card was drawn, applies it, then removes it from the deck
 		
 		//Adds cards to the scene according to how many the player has
 		if(playerHand.size() == 0)
@@ -440,13 +440,29 @@ public class Main extends Application {
 		
 		//Button actions for Scene 1
 		bRules.setOnAction(e-> Rules());
-		bChangeRace.setOnAction(e-> characterHelper.changeRace(actionLabel, character,  playerHand, cardChoice));
-		bChangeClass.setOnAction(e-> characterHelper.changeClass(actionLabel, character, playerHand, cardChoice));
-		bHelpfulLevel.setOnAction(e-> helpful.helpLevelUp(character, playerHand, cardChoice));
+		bChangeRace.setOnAction(e->
+		{
+			characterHelper.changeRace(actionLabel, character,  playerHand, cardChoice);
+			startScene(pPrimaryStage); //Refreshes the scene
+		});
+		
+		bChangeClass.setOnAction(e-> 
+		{
+			characterHelper.changeClass(actionLabel, character, playerHand, cardChoice);
+			startScene(pPrimaryStage);
+		});
+		
+		bHelpfulLevel.setOnAction(e-> 
+		{
+			helpful.helpLevelUp(character, playerHand, cardChoice);
+			startScene(pPrimaryStage);
+		});
+		
 		bHelpfulSell.setOnAction(e-> 
 		{
 			worthDouble = true; //Makes the next treasure card worth double
 			actionLabel.setText("  The next treasure card you sell on this scene will be sold for double since/n  you used a helpful card!");
+			startScene(pPrimaryStage);
 		}); 
 		
 		bHalflingSell.setOnAction(e-> halfling.sellDouble(bHalflingSell, playerHand, character, cardChoice));
@@ -789,7 +805,7 @@ public class Main extends Application {
 			scene3Grid.add(actionLabel, 1, 15, 8, 1);
 			
 			//Have to do this line before making hboxes but after action label. Not part of layout.
-			curseHelper.checkCurse(actionLabel, curse, playerHand); //Checks if a curse card was drawn, applies it, then removes it from the deck
+			curseHelper.checkCurse(character, actionLabel, curse, playerHand); //Checks if a curse card was drawn, applies it, then removes it from the deck
 			
 
 			//Puts however many cards the character has in the hbox
@@ -926,7 +942,12 @@ public class Main extends Application {
 					
 			//Button actions for Scene 3
 			bRules.setOnAction(e-> Rules());
-			bChangeRace.setOnAction(e-> characterHelper.changeRace(actionLabel, character, playerHand, cardChoice));
+			bChangeRace.setOnAction(e-> 	
+			{
+				characterHelper.changeRace(actionLabel, character, playerHand, cardChoice);
+				switchScene(pPrimaryStage);
+			});
+			
 			bChangeClass.setOnAction(e-> characterHelper.changeClass(actionLabel, character, playerHand, cardChoice));
 			bGoldLevel.setOnAction(e-> characterHelper.buyLevel(actionLabel, character, cardChoice));
 			bPlayMonster.setOnAction(e-> 
@@ -936,8 +957,18 @@ public class Main extends Application {
 				switchScene(pPrimaryStage);
 			});
 			
-			bHalflingSell.setOnAction(e-> halfling.sellDouble(bHalflingSell, playerHand, character, cardChoice));
-			bSellTreasure.setOnAction(e-> playerHandHelper.sellTreasure(worthDouble, character, playerHand, cardChoice));
+			bHalflingSell.setOnAction(e-> 
+			{
+				halfling.sellDouble(bHalflingSell, playerHand, character, cardChoice);
+				switchScene(pPrimaryStage);
+			});
+			
+			bSellTreasure.setOnAction(e-> 
+			{
+				playerHandHelper.sellTreasure(worthDouble, character, playerHand, cardChoice);
+				switchScene(pPrimaryStage);
+			});
+			
 			bDoorDeck.setOnAction(e->
 			{
 				doorDeckNum = playerHandHelper.drawDoor(doorDeckNum, doorCards, playerHand); //Draws a card and sets the number of door deck cards
@@ -1179,7 +1210,7 @@ public class Main extends Application {
 		
 		//Checks the player's hand for curse cards
 		actionLabel.setText("  You are now discarding cards!");
-		curseHelper.checkCurse(actionLabel, curse, playerHand); //Have to do this after actionlabel and before an hBox is made
+		curseHelper.checkCurse(character, actionLabel, curse, playerHand); //Have to do this after actionlabel and before an hBox is made
 		
 		if(playerHand.size() == 0)
 		{
@@ -1553,6 +1584,9 @@ public class Main extends Application {
 	//Seeing how many cards the player has then setting text on buttons associated with those cards
 	public void setCardText()
 	{
+		characterInfo.setText("Player Level: " + character.getLevel() + "\nPlayer Race: " + character.getRace() + "\nPlayer Class: " + character.getplayerClass() + "\nPlayer Gold: "+ character.getGold());
+		characterMonsterInfo.setText("Player Level: " + character.getLevel() + "\nPlayer Race: " + character.getRace() + "\nPlayer Class: " + character.getplayerClass() + "\nPlayer Gold: " + character.getGold() + "\nFight Bonus: " + character.getFightBonus() + "\nRun Bonus: " + character.getRunBonus());
+		
 		if(playerHand.size() >=1)
 		{
 			card1.setText(((DoorDeck) playerHand.get(0)).getName() + " Card");

@@ -18,6 +18,8 @@ public class CharacterHelper
 		pCharacter.setRace(((DoorDeck) pPlayerHand.get(pCardChoice)).getName());
 		
 		pActionLabel.setText("  You changed your race to a " + pCharacter.getRace() + " Please click on the door deck in red to the left to draw!");
+		
+		pPlayerHand.remove(pCardChoice);
 	}
 
 	public void changeClass(Label pActionLabel, Character pCharacter, ArrayList pPlayerHand, int pCardChoice) //Sets the player's class
@@ -25,6 +27,8 @@ public class CharacterHelper
 		pCharacter.setPlayerClass(((DoorDeck) pPlayerHand.get(pCardChoice)).getName());
 		
 		pActionLabel.setText("  You changed your class to a " + pCharacter.getClass() + " Please click on the door deck in red to the left to draw!" );
+		
+		pPlayerHand.remove(pCardChoice);
 
 	}
 

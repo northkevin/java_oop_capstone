@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.scene.control.Label;
 
@@ -17,7 +18,49 @@ public class CurseHelper
 	// 8-10:Losing a level
 	//Checks if the player drew a curse
 	
-	public void checkCurse(Label pActionLabel, Curse pCurse, ArrayList pPlayerHand) 
+	
+	// 1-2:Hex of Grief--Loosing the same number of items as the number picked
+	public void loseCards(ArrayList itemList, int number) 
+	{
+		for (int i = 0; i < number; i++) 
+		{
+			itemList.remove(i);
+			number--; //Array list shift
+			i--; //Array list shift
+		}
+	}
+
+	// 3:Curse of Imbalance--Losing raceand become human
+	public void loseRace(Character currentCharacter) 
+	{
+		currentCharacter.setRace("Human");
+	}
+
+	// 4-5:The Shaking Cure--Losing race and draw a random new race card
+	public void loseRaceAndDraw(Character currentCharacter) 
+	{
+		String races[] = { "Dwarf", "Elf", "Halfling" };
+		Random r = new Random();
+		int num = r.nextInt(3);
+		
+		currentCharacter.setRace(races[num]);
+	}
+
+	// 6-7:Curse of the Waste-- Losing class
+	public void loseClass(Character currentCharacter) 
+	{
+		currentCharacter.setPlayerClass("None");
+	}
+
+	// 8-10: Heart of Stone--Losing a level
+	public void loseLevel(Character pCharacter) 
+	{
+		pCharacter.setLevel(pCharacter.getLevel() - 1);
+		System.out.println(pCharacter.getLevel());
+	}
+
+	
+	public void checkCurse(Character pCharacter, Label pActionLabel, Curse pCurse, ArrayList pPlayerHand) 
 	{
 		int curseNumber = 0; //What is the random curse number?
 		int size = pPlayerHand.size(); //Keeps track of the size of the player's hand
@@ -34,31 +77,37 @@ public class CurseHelper
 			if(pPlayerHand.get(f) instanceof Curse)
 			{
 				curseNumber = ((Curse) pPlayerHand.get(f)).getCurseNum(); //Gets the curse number that is attached to the card
-				System.out.println(curseNumber);
 				
 				if(curseNumber == 1 || curseNumber == 2)
 				{
-					//TODO call loseCards(curseNum)
+					if(curseNumber == 1)
+					{	
+						//loseCards(pPlayerHand, 1);
+					}
+					else
+					{
+						//loseCards(pPlayerHand, 2);
+					}
 					cardLoss = " " + ((DoorDeck) pPlayerHand.get(f)).getName() + " has made some of your cards disappear!";
 				}
 				else if(curseNumber == 3)
 				{
-					//TODO call loseRace
+					loseRace(pCharacter);
 					raceLoss = " " + ((DoorDeck) pPlayerHand.get(f)).getName() + " has made you human!";
 				}
 				else if(curseNumber == 4 || curseNumber == 5)
 				{
-					//TODO call loseRaceAndDraw
+					//loseRaceAndDraw(pCharacter);
 					raceLossAndDraw = " " + ((DoorDeck) pPlayerHand.get(f)).getName() + " has changed your race!";
 				}
 				else if(curseNumber == 6 || curseNumber == 7)
 				{
-					//TODO call loseClass
+					loseClass(pCharacter);
 					classLoss = " " + ((DoorDeck) pPlayerHand.get(f)).getName() + " has made you forget your class!";
 				}
 				else //curseNumber is 8-10
 				{
-					//TODO call loseLevel
+					loseLevel(pCharacter);
 					levelLoss = " " + ((DoorDeck) pPlayerHand.get(f)).getName() + " has drawn your strength and pushed you down some levels!";
 				}
 				
@@ -67,7 +116,7 @@ public class CurseHelper
 				size = size - 1; //The size of the arraylist is now smaller since an element was removed
 				f--; //f deincremented to take the removal into account since when you delete by index you simply move everything that has higher index than the removed element one place down
 				
-				System.out.println("Removed"); //For testing purposed only!
+
 			}
 			
 			if(curseNumber!= 0)

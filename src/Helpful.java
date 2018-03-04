@@ -26,14 +26,11 @@ public class Helpful extends DoorDeck
 		
 	}
 	
-	public void sellDoubleVal(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
-	{
-		System.out.println("Sell double value"); //For testing purposes only. Sees if button works.
-	}
-	
 	public void helpLevelUp(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
 	{
-		System.out.println("Helpful level up"); //For testing purposes only. Sees if button works.
+		pCharacter.setLevel(pCharacter.getLevel() + 1); //Levels the player up
+		
+		pPlayerHand.remove(pCardChoice); //Removes the card from the player's hand
 	}
 
 
