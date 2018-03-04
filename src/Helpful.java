@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
-public class Helpful extends DoorDeck
+public class Helpful extends DoorDeck implements HelpSubject
 {
+	Helpable character;
 	
 	Helpful()//Constructor
 	{
@@ -33,8 +34,26 @@ public class Helpful extends DoorDeck
 	
 	public void helpLevelUp(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
 	{
-		System.out.println("Helpful level up"); //For testing purposes only. Sees if button works.
+		notifyChar();
 	}
+
+  @Override
+  public void addChar(Helpable obj)
+  {
+    this.character = obj;
+  }
+
+  @Override
+  public void removeChar(Helpable obj)
+  {
+    this.character = null; 
+  }
+
+  @Override
+  public void notifyChar()
+  {
+    if (this.character != null) {this.character.levelUp();}
+  }
 
 
 }

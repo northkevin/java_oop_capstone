@@ -1,5 +1,5 @@
 
-public class Character 
+public class Character implements Helpable
 {
 	String race; 
 	String playerClass;
@@ -87,4 +87,10 @@ public class Character
 	{
 		isDead = pIsDead;
 	}
+
+  @Override
+  public void levelUp()
+  {
+    this.level++;
+  }
 }

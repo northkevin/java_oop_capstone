@@ -1373,9 +1373,9 @@ public class Main extends Application {
 		
 	}
 	
-	public ArrayList createTreasureDeck()
+	public ArrayList<Treasure> createTreasureDeck()
 	{
-		ArrayList treasureDeckCards = new ArrayList();
+		ArrayList<Treasure> treasureDeckCards = new ArrayList<Treasure>();
 		
 		for(int j = 0; j < 99; j++) //Will put 100 treasure cards in a deck of treasure
 		{
@@ -1385,10 +1385,10 @@ public class Main extends Application {
 		return treasureDeckCards;
 	}
 	
-	public ArrayList createDoorDeck()
+	public ArrayList<DoorDeck> createDoorDeck()
 	{
 		//Creating the doorCard arrayList
-		ArrayList doorDeckCards = new ArrayList();
+		ArrayList<DoorDeck> doorDeckCards = new ArrayList<DoorDeck>();
 				
 		for(int i = 0; i < 30; i++) //30% monster cards
 		{	
@@ -1419,6 +1419,12 @@ public class Main extends Application {
 			doorDeckCards.add(DoorDeckFactory.createCard(5)); //Adds class wizards to the door deck
 			doorDeckCards.add(DoorDeckFactory.createCard(6)); //Adds class clerics to the door deck
 		}
+		
+		doorDeckCards.forEach(card ->{
+		  if(card instanceof Helpful) {
+		    ((Helpful) card).addChar(character);
+		  }
+		});
 						
 		Collections.shuffle(doorDeckCards); //Shuffles all the cards that were added to the array list
 		doorDeckNum = 99; //Says there are 100 cards in the door deck(Since we start with 0)
