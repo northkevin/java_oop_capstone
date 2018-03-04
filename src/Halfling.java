@@ -19,8 +19,14 @@ public class Halfling extends DoorDeck
 	
 	public void sellDouble(Button pbHalflingSell, ArrayList pPlayerHand, Character pCharacter, int pCardChoice) //Sells the card picked for twice it's value and sets gold
 	{
+		int goldWorth = 0;
+		
 		pbHalflingSell.setDisable(true); //Since the player has already used their ability
-		System.out.println("Treasure Sold for double"); //For testing only. Sees the button is working
+		
+		goldWorth = ((Treasure) pPlayerHand.get(pCardChoice)).getValue(); //Retrieves the gold value of the treasure
+		pCharacter.setGold(pCharacter.getGold() + goldWorth); //Adds the gold to the player's current
+		
+		pPlayerHand.remove(pCardChoice); //Removes the treasure card from the player's hand
 	}
 
 }

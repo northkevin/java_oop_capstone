@@ -54,11 +54,12 @@ public class Character
 	
 	public void setFightBonus(int pFightBonus)
 	{
+		
 		fightBonus = pFightBonus;
 	}
 	
 	public void setRunBonus(int pRunBonus)
-	{
+	{	
 		runBonus = pRunBonus;
 	}
 	
