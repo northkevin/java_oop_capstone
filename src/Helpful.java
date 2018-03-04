@@ -32,7 +32,7 @@ public class Helpful extends DoorDeck implements HelpSubject
 		System.out.println("Sell double value"); //For testing purposes only. Sees if button works.
 	}
 	
-	public void helpLevelUp(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)
+	public void helpLevelUp()
 	{
 		notifyChar();
 	}

@@ -433,7 +433,7 @@ public class Main extends Application {
 		bRules.setOnAction(e-> Rules());
 		bChangeRace.setOnAction(e-> characterHelper.changeRace(character, playerHand, cardChoice));
 		bChangeClass.setOnAction(e-> characterHelper.changeClass(character, playerHand, cardChoice));
-		bHelpfulLevel.setOnAction(e-> helpful.helpLevelUp(character, playerHand, cardChoice));
+		bHelpfulLevel.setOnAction(e-> helpful.helpLevelUp());
 		bHelpfulSell.setOnAction(e-> 
 		{
 			worthDouble = true; //Makes the next treasure card worth double
