@@ -81,12 +81,12 @@ public class CharacterHelper
 				if(rollResult > 4) { 
 					// success; player run
 					System.out.println("You Win");
-					monsterType.collectTreasure();
+//					monsterType.collectTreasure();
 				
 				}
 				else {
 					// loss
-					monsterType.collectLoss();
+//					monsterType.collectLoss();
 				
 				}
 			}
@@ -113,7 +113,7 @@ public class CharacterHelper
 					else
 					{
 						// loss
-						monsterType.collectLoss();
+//						monsterType.collectLoss();
 
 					}
 				}
