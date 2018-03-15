@@ -1,3 +1,8 @@
+# CSCV-335 Munchkin Game
+
+![Munchkin Game](https://i.imgur.com/0UR3CHW.png)
+
+
 # Getting Started
 1. [Download & Install Git](https://git-scm.com/downloads)
 2. Open terminal & change to a project directory
