@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import javafx.scene.control.Button;
 import model.Character;
 
-public class Halfling extends Card
+public class Halfling extends CardFactory
 {
 
 	Halfling() //Constructor
 	{
 		super();
-		constructCard();
 	}
 	
 	@Override

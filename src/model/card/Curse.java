@@ -1,19 +1,17 @@
 package model.card;
 
-public class Curse extends Card
+public class Curse extends CardFactory
 {
 
 	Curse() //Constructor
 	{
 		super();
-		constructCard();
 	}
 	
 	@Override
 	public void constructCard() 
 	{
 		setName(randomCurseName());
-		
 	}
 
 	public String randomCurseName() //Will generate a random name from a list of curses

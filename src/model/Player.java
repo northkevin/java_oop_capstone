@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.card.Card;
+import model.deck.DoorDeck;
 
-public class Player implements Playable{
+public class Player implements Playable {
   
   private ArrayList<Card> hand;
   private Character character;
@@ -18,12 +19,12 @@ public class Player implements Playable{
   }
   
   // Deal numOfCards from gameDeck to this player's hand
-  public void dealHand(Deck gameDeck, int numOfCards) {
+  public void dealHand(DoorDeck gameDeck, int numOfCards) {
     for(int i = 0; i < numOfCards; i++) 
     {
       if(gameDeck.hasNext()) 
       {
-        this.hand.add(gameDeck.next());
+        this.hand.add((Card) gameDeck.next());
       }
       else 
       {

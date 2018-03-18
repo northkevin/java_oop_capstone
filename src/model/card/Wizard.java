@@ -3,13 +3,12 @@ import java.util.ArrayList;
 
 import model.Character;
 
-public class Wizard extends Card
+public class Wizard extends CardFactory
 {
 
 	Wizard()
 	{
 		super();
-		constructCard();
 	}
 	
 	@Override

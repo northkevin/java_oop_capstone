@@ -6,13 +6,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Toggle;
 import javafx.stage.Stage;
-import model.Deck;
 import model.Player;
+import model.deck.DoorDeck;
 
 
 public class Main extends Application {
   
-  private Deck doorCards;
+  private DoorDeck doorCards;
   private Player player;
   private Stage primaryStage;
   private Scene primaryScene;
@@ -31,9 +31,11 @@ public class Main extends Application {
   public void start(Stage primaryStage) throws Exception
   {
     //TODO this needs to loop or pass too someone who watches the state of game obj.
-    initGame();
+    
+    initGame(); // initialize non-javafx classes related to Game
+    
     this.primaryStage = primaryStage;
-    initPrimaryScene();
+    initPrimaryScene(); // initialize the first scene
   }
 
   // initializer for all game related objects
@@ -49,7 +51,8 @@ public class Main extends Application {
     
     
     // First thing the program does is make the door deck
-    doorCards = new Deck();
+    doorCards = new DoorDeck();
+    //treasureCards = new DoorDeck();
     
     
     // Second thing the program does is deal the player 8 cards

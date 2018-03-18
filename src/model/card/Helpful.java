@@ -3,20 +3,18 @@ import java.util.ArrayList;
 
 import model.Character;
 
-public class Helpful extends Card
+public class Helpful extends CardFactory
 {
 	
 	Helpful()//Constructor
 	{
 		super();
-		constructCard();
 	}
 
 	@Override
 	public void constructCard() 
 	{
 		setName(randomHelpfulName());
-		
 	}
 	
 	public String randomHelpfulName() //generates a random name from among some helpful items
@@ -26,7 +24,6 @@ public class Helpful extends Card
 		String name = helpfulNames[index];
 		 
 		return(name);
-		
 	}
 	
 	public void sellDoubleVal(Character pCharacter, ArrayList pPlayerHand, int pCardChoice)

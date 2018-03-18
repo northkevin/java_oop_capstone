@@ -1,12 +1,11 @@
 package model.card;
 
-public class Elf extends Card
+public class Elf extends CardFactory
 {
 
 	Elf() //Constructor
 	{
 		super();
-		constructCard();
 	}
 	
 	@Override

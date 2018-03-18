@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import model.Character;
 
 
-public class Cleric extends Card{
+public class Cleric extends CardFactory{
 
 	Cleric() //Constructor
 	{
 		super();
-		constructCard();
 	}
 	
 	@Override

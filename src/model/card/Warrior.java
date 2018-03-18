@@ -3,13 +3,12 @@ import java.util.ArrayList;
 
 import model.Character;
 
-public class Warrior extends Card
+public class Warrior extends CardFactory
 {
 
 	Warrior()
 	{
 		super();
-		constructCard();
 	}
 	
 	@Override
@@ -21,6 +20,6 @@ public class Warrior extends Card
 	
 	public void berserking(Character pCharacter, ArrayList pPlayerHand)
 	{
-		
+		// sup boi
 	}
 }
