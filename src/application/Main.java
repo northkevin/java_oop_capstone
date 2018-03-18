@@ -8,11 +8,13 @@ import javafx.scene.control.Toggle;
 import javafx.stage.Stage;
 import model.Player;
 import model.deck.DoorDeck;
+import model.deck.TreasureDeck;
 
 
 public class Main extends Application {
   
   private DoorDeck doorCards;
+  private TreasureDeck treasureCards;
   private Player player;
   private Stage primaryStage;
   private Scene primaryScene;
@@ -52,7 +54,7 @@ public class Main extends Application {
     
     // First thing the program does is make the door deck
     doorCards = new DoorDeck();
-    //treasureCards = new DoorDeck();
+    treasureCards = new TreasureDeck();
     
     
     // Second thing the program does is deal the player 8 cards
