@@ -58,8 +58,19 @@ public class ButtonController {
   }
 //TODO pass player obj to a method OR implement an Observable between Player and ButtonController
 
-  public static void displayButtonsFor(Toggle selectedToggle)
+  public void displayButtonsFor(String scene)
   {
+    switch(scene)
+    {
+    case "monster":
+      bTreasureBonus.setDisable(true);
+      bTurning.setDisable(true);
+      bFlight.setDisable(true);
+      bBerserking.setDisable(true);
+      bCharm.setDisable(true);
+      break;
+    default:
+    }
     //TODO move button event here for disabling buttons based on state of Player's hand
     
   }
@@ -75,6 +86,8 @@ public class ButtonController {
 //    bSellTreasure.setDisable(true);
 //    bHelpfulLevel.setDisable(true);
 //    bHelpfulSell.setDisable(true);
+    
+    
   }
 
   public static void checkDispayHalflingButton()

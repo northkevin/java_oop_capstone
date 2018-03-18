@@ -47,15 +47,14 @@ public class Main extends Application {
   // Player
   // Character
   // Treasure
-  private void initGame() {
+  private void initGame() 
+  {
     // Organizing game things in game class
     game = new Game();
-    
     
     // First thing the program does is make the door deck
     doorCards = new DoorDeck();
     treasureCards = new TreasureDeck();
-    
     
     // Second thing the program does is deal the player 8 cards
     player = new Player();
@@ -68,7 +67,8 @@ public class Main extends Application {
   // initializer for primary scene
   // 
   // Scene 1
-  private void initPrimaryScene() {    
+  private void initPrimaryScene() 
+  {    
     //Setting up the layout
     //TODO change SceneController to return a scene object.. instad of whats happening right now
     sceneController = new SceneController();
@@ -93,7 +93,8 @@ public class Main extends Application {
         {
           // need to identify the toggle buttons with a card number.. enum goes somewhere.. to tired.
           //TODO make this work lol
-          ButtonController.displayButtonsFor(sceneController.cardGroup.getSelectedToggle());
+          //ButtonController.displayButtonsFor(sceneController.cardGroup.getSelectedToggle());
+          initMonsterScene();
         }
         else
         {
@@ -103,6 +104,51 @@ public class Main extends Application {
       }
     });
   }
+  
+  private void initMonsterScene()
+  {
+  //Setting up the layout
+    //TODO change SceneController to return a scene object.. instad of whats happening right now
+    sceneController = new SceneController();
+    primaryScene = new Scene(sceneController.scenePane, 1400, 700);
+    primaryScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+//    primaryStage.setScene(primaryScene);
+//    primaryStage.setTitle("Munchkin First Draw");
+//    primaryStage.show();
+    primaryStage.setScene(primaryScene);
+    primaryStage.setTitle("Monster Encounter");
+    primaryStage.show(); 
+    
+    //Disabling all buttons at the beginning
+    ButtonController.displayButtonsNone(null);
+    ButtonController.checkDispayHalflingButton();
+    
+    //TODO move togglebutton functionality to scene controller
+    sceneController.cardGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+      @Override
+      public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+      {
+        //TODO  refactor this out of Main.java to take directions from some kind of controller class that decides how buttons are displayed based on player state
+        // if togglebutton is selected, get the button selected
+        if(sceneController.cardGroup.getSelectedToggle() != null)
+        {
+          // need to identify the toggle buttons with a card number.. enum goes somewhere.. to tired.
+          //TODO make this work lol
+          //ButtonController.displayButtonsFor(sceneController.cardGroup.getSelectedToggle());
+        }
+        else
+        {
+          ButtonController.displayButtonsNone(null);
+        }
+        
+      }
+    });
+    
+    
+    
+  }
       
+  
+  
   
 }

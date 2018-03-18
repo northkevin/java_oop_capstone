@@ -1,6 +1,8 @@
 package application;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -14,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 public class SceneController {
+  Scene currentScene;
   GridPane sceneGrid;
   HBox cardsHbox;
   HBox sceneHbox;
@@ -30,6 +33,7 @@ public class SceneController {
   ToggleButton card7; //If the dwarf draws too many cards
   //Toggle Group
   ToggleGroup cardGroup;
+  ArrayList<ToggleButton> cards;
   
   //Labels
   Label instructionLabel; //The top label in our GUI
@@ -54,8 +58,8 @@ public class SceneController {
     initLayoutElementsForScene();
     initScene();
   }
-  
-  private void initScene() {
+  private void initScene() 
+  {
   //Setting up the layout for Scene1
     //TODO move margin translate numbers into CSS
     buttonController.bDoorDeck.setTranslateX(19);
@@ -76,16 +80,16 @@ public class SceneController {
     sceneGrid.add(separator, 1,10,8,1);
     sceneGrid.add(cardsHbox, 1, 12, 8, 1);
     sceneGrid.add(actionLabel, 1, 15, 8, 1);
-  }
-  
-  private void initLayoutElementsForScene() {
+  } 
+  private void initLayoutElementsForScene() 
+  {
     sceneGrid = new GridPane();
     cardsHbox = new HBox(10, characterInfo, card1, card2, card3, card4, card5); //Puts all the cards in one hbox
     sceneHbox = new HBox(board, sceneGrid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
     scenePane = new Pane(sceneHbox, buttonController.bDoorDeck); //Made a pane so I can put the door deck button wherever I want
   }
-  
-  private void initUIElementsForScene() {
+  private void initUIElementsForScene() 
+  {
     
     
     //Creating and styling buttons
@@ -140,4 +144,243 @@ public class SceneController {
       board = new ImageView();
       board.setId("munchkinBoard");
     }
-}
+  private void setTextForPlayerCards(int numOfPlayerCards) 
+  {
+    ArrayList<ToggleButton> cards = new ArrayList<ToggleButton>();
+    for(int i = 0; i < numOfPlayerCards; i++)
+    {
+      cards.add((ToggleButton)cardGroup.getToggles().get(i));
+    }
+    
+    cards.forEach(card -> {
+      card.setText("TBD");
+//      // always set name to this
+//      card3.setText(((DoorDeck) playerHand.get(2)).getName() + " Card");
+//      // if Monster
+//      card3.setText("Monster\n" + ((DoorDeck) playerHand.get(2)).getName() + "\nLevel: " + ((Monster) playerHand.get(2)).getLevel() + "\nVulnerability: " + "\nTreasure: " + ((Monster) playerHand.get(2)).getGood());
+//      // if Helpful
+//      card3.setText("Helpful Card\n" + ((DoorDeck) playerHand.get(2)).getName() );
+//      // if Treasure
+//      // needs to be written
+    });
+  }
+    
+  private void initMonsterScene(int numOfPlayerCards) 
+  {
+    
+  // game Things
+  // --
+    Boolean Draw1st = false; //This is the monster encounter not the first draw
+    
+  // java-fx things
+  // --
+    //Creates new instances of the objects
+    //Setting up the layout for Scene 2
+    
+    sceneGrid = new GridPane();
+    buttonController.bMonsterEncounter.setTranslateX(75);
+    buttonController.bMonsterEncounter.setTranslateY(200);
+    sceneGrid.setHgap(10);
+    sceneGrid.setVgap(10);
+    sceneGrid.add(monsterActionLabel, 1, 0, 3, 1);
+    sceneGrid.add(abilityLabel, 4, 0, 4, 1);
+    sceneGrid.add(buttonController.bRules, 8, 0);
+    sceneGrid.add(fakeLabel5, 1, 2);
+    sceneGrid.add(buttonController.bTreasureBonus, 2, 2);
+    sceneGrid.add(buttonController.bTurning, 4, 1, 1, 2);
+    sceneGrid.add(buttonController.bFlight, 4, 3, 1, 2);
+    sceneGrid.add(fakeLabel4, 5, 1);
+    sceneGrid.add(buttonController.bBerserking, 6, 1, 2, 2);
+    sceneGrid.add(buttonController.bCharm, 6, 3, 2, 2);
+    sceneGrid.add(separator, 1,9,8,1);
+  
+      
+    switch(numOfPlayerCards)
+    {
+      case 0:
+        cardsHbox = new HBox(10, characterMonsterInfo);
+      case 1:
+        cardsHbox = new HBox(10, characterMonsterInfo, card1);
+      case 2:
+        cardsHbox = new HBox(10, characterMonsterInfo, card1, card2);
+      case 3:
+        cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3);
+      case 4:
+        cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4);
+      case 5:
+        cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5);
+      default: 
+        cardsHbox = new HBox(10, characterMonsterInfo, card1, card2, card3, card4, card5, card6);
+    }
+    
+      sceneGrid.add(cardsHbox, 1, 12, 8, 1);
+      sceneGrid.add(actionLabel, 1, 14, 8, 1);
+      sceneHbox = new HBox(board, sceneGrid); //Puts the board and the rest of the buttons(except bDoorDeck) in an hbox
+      scenePane = new Pane(sceneHbox, buttonController.bMonsterEncounter); //Made a pane so I can put the door deck button wherever I want
+      //TODO maybe use this here      currentScene = new Scene(scenePane, 1400, 700);
+      
+//      setCardText(); //Sets the text of a card on a button associated with that card
+      setTextForPlayerCards(numOfPlayerCards);
+      
+      
+      //Disabling all buttons at the beginning of scene
+      buttonController.displayButtonsFor("monster");
+      
+//      buttonController.bMonsterEncounter.setText("Monster \n" + ((DoorDeck) monsterCard).getName() + "\nLevel: " + monsterCard.getLevel() + "\nVulnerability: " + "\nTreasure: " + monsterCard.getGood());
+//            
+//      //Enables the class abilities if the player is that class
+//      if(character.getplayerClass() == "Cleric")
+//      {
+//        if(cleric.isActive() == false) //Does not enable if turning has already been used
+//        { 
+//          buttonController.bTurning.setDisable(false);
+//        } 
+//      }
+//      else if(character.getplayerClass() == "Warrior")
+//      {
+//        if(warrior.isActive() == false) //Does not enable if berserking has already been used
+//        { 
+//          buttonController.bBerserking.setDisable(false);
+//        } 
+//      }
+//      else if(character.getplayerClass() == "Wizard")
+//      {
+//        if(charmUsed == false)
+//        {
+//          buttonController.bCharm.setDisable(false); //Does not enable if charm has already been used
+//        }
+//        if(flightUsed == false)
+//        {
+//          buttonController.bFlight.setDisable(false); //Does not enable if flight has already been used
+//        }
+//      }
+//      
+//      //ToggleButton Actions for scene 2
+//      cardsSelected = 0; //There are automatically no cards selected
+//      card1.setOnAction(e-> 
+//      {
+//        if(card1.isSelected())
+//        {
+//          cardChoice = 0; //Card is equal to playerhand.get(0). Card 1.
+//        }
+//        else
+//        {
+//          cardChoice = -1;
+//        }
+//            
+//        //Grays out or ungrays out the proper buttons
+//        EnableButtons(cardChoice, playerHand);
+//      });
+//              
+//      card2.setOnAction(e-> 
+//      {
+//        if(card2.isSelected())
+//        {
+//          cardChoice = 1; //Card is equal to playerhand.get(1). Card 2
+//        }
+//        else
+//        {
+//          cardChoice = -1;
+//        }
+//              
+//        //Grays out or ungrays out the proper buttons
+//        EnableButtons(cardChoice, playerHand);
+//      });
+//              
+//      card3.setOnAction(e-> 
+//      {
+//        if(card3.isSelected())
+//        {
+//          cardChoice = 2; //Card is equal to playerhand.get(2). Card 3
+//        }
+//        else
+//        {
+//          cardChoice = -1;
+//        }
+//              
+//        //Grays out or ungrays out the proper buttons
+//        EnableButtons(cardChoice, playerHand);
+//      });
+//              
+//      card4.setOnAction(e-> 
+//      {
+//        if(card4.isSelected())
+//        {
+//          cardChoice = 3; //Card is equal to playerhand.get(3). Card 4,   
+//        }
+//        else
+//        {
+//          cardChoice = -1;
+//        }
+//              
+//        //Grays out or ungrays out the proper buttons
+//        EnableButtons(cardChoice, playerHand);
+//      });
+//      
+//      card5.setOnAction(e-> 
+//      {
+//        if(card5.isSelected())
+//        {
+//          cardChoice = 4; //Card is equal to playerhand.get(4). Card 5,   
+//        }
+//        else
+//        {
+//          cardChoice = -1;
+//        }
+//              
+//        //Grays out or ungrays out the proper buttons
+//        EnableButtons(cardChoice, playerHand);
+//      });
+//      
+//      card6.setOnAction(e-> 
+//      {
+//        if(card6.isSelected())
+//        {
+//          cardChoice = 5; //Card is equal to playerhand.get(3). Card 4,   
+//        }
+//        else
+//        {
+//          cardChoice = -1;
+//        }
+//              
+//        //Grays out or ungrays out the proper buttons
+//        EnableButtons(cardChoice, playerHand);
+//      });
+//      
+//      //Button actions for Scene 1
+//      buttonController.bRules.setOnAction(e-> Rules());
+//      buttonController.bTreasureBonus.setOnAction(e-> playerHandHelper.useTreasure(character, playerHand, cardChoice));
+//      buttonController.bTurning.setOnAction(e-> 
+//      {
+//        cleric.turning(character, playerHand);
+//        abilityScene(pPrimaryStage);
+//      });
+//      
+//      buttonController.bBerserking.setOnAction(e-> 
+//      {
+//        warrior.berserking(character, playerHand);
+//        abilityScene(pPrimaryStage);
+//        
+//      });
+//      
+//      buttonController.bFlight.setOnAction(e-> 
+//      {
+//        wizard.flight(character, playerHand);
+//        flightUsed = true;
+//        abilityScene(pPrimaryStage);
+//      });
+//      
+//      buttonController.bCharm.setOnAction(e-> 
+//      {
+//        wizard.charm(character, playerHand);
+//        charmUsed = true;
+//        abilityScene(pPrimaryStage);
+//        
+//      });
+//      buttonController.bMonsterEncounter.setOnAction(e-> 
+//      {
+//        characterHelper.combat(character, playerHand, monsterHelper);
+//        startScene(pPrimaryStage);
+//      });
+    } 
+  }
